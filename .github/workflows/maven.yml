@@ -6,6 +6,8 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
+# let's see if it will run
+
 name: Java CI with Maven
 
 on:
