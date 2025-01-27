@@ -33,6 +33,7 @@ class App extends Component {
         // console.log(token);
         if (token !== null) {
             const decoded = jwtDecode(token);
+            console.log(decoded);
             const now = new Date();
             if (now + 1 * 60 * 1000 > decoded.exp) {
                 console.log("token expired");
