@@ -1,0 +1,146 @@
+import React, { Component } from 'react';
+import $ from 'jquery';
+import EditorDemo from './test/EditorDemo';
+import Navbar from './Navbar';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Home from './Home';
+import Login from '../components/Login';
+import NotFound from '../components/NotFound';
+import ProblemManage from '../components/ProblemManage';
+import ProblemSet from '../components/ProblemSet';
+import Register from '../components/Register';
+import SetManage from '../components/SetManage';
+import UserProfile from '../components/UserProfile';
+import { connect } from 'react-redux';
+import { jwtDecode } from "jwt-decode";
+import ACTIONS from '../redux/actions';
+import ProgrammingEditor from './test/ProgrammingEditor';
+import MarkdownEditor from './test/MarkdownEditor';
+
+
+import BACKEND_ADDRESS_URL from "./config/BackendAddressURLConfig";
+
+
+import UserManage from './UserManage';
+
+
+
+class App extends Component {
+    state = {}
+
+    componentDidMount() {
+        const token = localStorage.getItem("token");
+        // console.log(token);
+        if (token !== null) {
+            const decoded = jwtDecode(token);
+            const now = new Date();
+            if (now + 1 * 60 * 1000 > decoded.exp) {
+                console.log("token expired");
+                localStorage.removeItem("token");
+            }
+            $.ajax({
+                url: BACKEND_ADDRESS_URL + "/user/account/info/",
+                type: "GET",
+                headers: {
+                    Authorization: "Bearer " + token
+                },
+                success: (resp) => {
+                    if (resp.error_message === "success") {
+                        const name = resp.name;
+                        const permission = parseInt(resp.permission);
+                        const user_id = parseInt(resp.user_id);
+                        const username = resp.username;
+                        this.props.update_user({
+                            user_id: user_id,
+                            username: username,
+                            name: name,
+                            permission: permission
+                        });
+                        this.props.update_token({ token: token });
+                        this.props.update_user({
+                            user_id: user_id,
+                            username: username,
+                            name: name,
+                            permission: permission
+                        });
+                    } else {
+                        console.log(resp);
+                        localStorage.removeItem("token");
+                    }
+                },
+                error: (resp) => {
+                    console.log(resp);
+                    localStorage.removeItem("token");
+                }
+            });
+        }
+    }
+
+    render() {
+        return (
+            <BrowserRouter>
+                <Navbar />
+                <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/editor_demo/' element={<EditorDemo />} />
+                    <Route path='/login/' element={<Login />} />
+                    <Route path='/markdown_editor_demo/' element={<MarkdownEditor />} />
+                    <Route path='/404/' element={<NotFound />} />
+                    <Route path='/programming_editor_demo/' element={<ProgrammingEditor />} />
+                    <Route path='/register/' element={<Register />} />
+
+                    {/* Problem Management */}
+                    <Route path='/problem_manage/' element={<ProblemManage />} />
+
+
+
+                    {/* My Problem Set */}
+                    <Route path='/problem_set/student_view/' element={<ProblemSet />} />
+
+
+
+                    {/* Problem Set Management */}
+                    <Route path='/set_manage/' element={<SetManage />} />
+
+
+                    {/* User Account System */}
+                    <Route path='/user_manage/' element={<UserManage />} />
+                    <Route path='/user_profile/' element={<UserProfile />} />
+                    <Route path="/*" element={<Navigate replace to="/404/" />} />
+                </Routes>
+            </BrowserRouter>
+        );
+    }
+}
+
+const mapStateToProps = (state, props) => {
+    return {
+        ...props,
+        user_id: state.user_id,
+        username: state.username,
+        name: state.name,
+        permission: state.permission,
+        token: state.token,
+        is_login: state.is_login,
+    };
+};
+
+const mapDispatchToProps = {
+    update_user: (data) => {
+        return {
+            type: ACTIONS.UPDATE_USER,
+            user_id: data.user_id,
+            username: data.username,
+            name: data.name,
+            permission: data.permission
+        };
+    },
+    update_token: (data) => {
+        return {
+            type: ACTIONS.UPDATE_TOKEN,
+            token: data.token,
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
