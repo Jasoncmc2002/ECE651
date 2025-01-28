@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "front-end-dev-sprint1" ]
+    branches: [ "front-end-dev-sprint[0-9]+" ]
   pull_request:
-    branches: [ "front-end-dev-sprint1" ]
+    branches: [ "front-end-dev-sprint[0-9]+" ]
 
 jobs:
   build:
