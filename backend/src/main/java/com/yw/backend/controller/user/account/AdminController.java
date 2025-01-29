@@ -20,7 +20,7 @@ public class AdminController {
             userId = Integer.parseInt(data.get("userId"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效用户ID");
+            resp.put("error_message", "Invalid user ID");
             return resp;
         }
 
@@ -32,7 +32,7 @@ public class AdminController {
             permission = Integer.parseInt(data.get("permission"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效权限");
+            resp.put("error_message", "Invalid permission value");
             return resp;
         }
 
@@ -46,7 +46,7 @@ public class AdminController {
             userId = Integer.parseInt(data.get("userId"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效用户ID");
+            resp.put("error_message", "Invalid user ID");
             return resp;
         }
 
@@ -71,7 +71,7 @@ public class AdminController {
             userId = Integer.parseInt(data.get("userId"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效用户ID");
+            resp.put("error_message", "Invalid user ID");
             return resp;
         }
         return adminService.adminDeleteUser(userId);
@@ -87,7 +87,7 @@ public class AdminController {
             permission = Integer.parseInt(data.get("permission"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效权限");
+            resp.put("error_message", "Invalid permission value");
             return resp;
         }
 
