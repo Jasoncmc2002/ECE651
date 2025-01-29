@@ -1,20 +1,20 @@
 package com.yw.backend.test.user.account;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.yw.backend.mapper.UserMapper;
-import com.yw.backend.pojo.User;
-import com.yw.backend.service.impl.utils.UserDetailsImpl;
-import com.yw.backend.service.impl.user.account.UpdateServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.mockito.ArgumentCaptor;
+//import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+//import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+//import com.yw.backend.mapper.UserMapper;
+//import com.yw.backend.pojo.User;
+//import com.yw.backend.service.impl.utils.UserDetailsImpl;
+//import com.yw.backend.service.impl.user.account.UpdateServiceImpl;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.MockitoAnnotations;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
 import java.util.Collections;
