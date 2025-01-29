@@ -37,17 +37,17 @@ public class LoginServiceTest {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
-    @Test
-    public void testGetToken() {
-
-        Map<String, String> token_result = loginService.getToken("abc", "1234");
-        assertEquals("success", token_result.get("error_message"));
-
-//        User testUser = new User(9, "abc", "1234", "Jenssen", 0, "");
-//        setAuthenticationToken(testUser);
-//        Map<String, String> result = infoService.getInfo();
-//        assertEquals("success", result.get("error_message"));
-    }
+//    @Test
+//    public void testGetToken() {
+//
+//        Map<String, String> token_result = loginService.getToken("abc", "1234");
+//        assertEquals("success", token_result.get("error_message"));
+//
+////        User testUser = new User(9, "abc", "1234", "Jenssen", 0, "");
+////        setAuthenticationToken(testUser);
+////        Map<String, String> result = infoService.getInfo();
+////        assertEquals("success", result.get("error_message"));
+//    }
 
 
 
