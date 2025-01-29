@@ -3,7 +3,6 @@ package com.yw.backend.config.filter;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yw.backend.mapper.UserMapper;
-
 import com.yw.backend.pojo.User;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
@@ -52,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         User user = userMapper.selectOne(userQueryWrapper);
 
         if (user == null) {
-            throw new RuntimeException("用户名未登录");
+            throw new RuntimeException("This username did not log in");
         }
 
         UserDetailsImpl loginUser = new UserDetailsImpl(user);
