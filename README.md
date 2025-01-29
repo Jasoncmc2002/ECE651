@@ -1,3 +1,1 @@
-# ECE651
-ECE651
-Hanzheng Henry Qiu's Branch
+ ECE651 backend sprint1 - user account component
