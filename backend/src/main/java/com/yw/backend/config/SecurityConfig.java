@@ -1,6 +1,5 @@
 package com.yw.backend.config;
 
-
 import com.yw.backend.config.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

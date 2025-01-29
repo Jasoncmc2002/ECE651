@@ -50,7 +50,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         User user = userMapper.selectOne(userQueryWrapper);
 
         if (user == null) {
-            throw new RuntimeException("用户名未登录");
+            throw new RuntimeException("This username did not log in");
         }
 
         UserDetailsImpl loginUser = new UserDetailsImpl(user);
