@@ -37,6 +37,3 @@ jobs:
       - name: Test
         working-directory: "./frontend/"
         run: npm test
-      - name: Coverage
-        working-directory: "./frontend/"
-        run: npm run coverage_1
