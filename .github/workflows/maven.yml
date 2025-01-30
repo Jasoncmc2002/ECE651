@@ -31,12 +31,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Wait for MySQL to be ready
-        run: |
-          while ! mysqladmin ping -h localhost -u root -p123456 --silent; do
-            echo "Waiting for MySQL to start..."
-            sleep 2
-          done
+#      - name: Wait for MySQL to be ready
+#        run: |
+#          while ! mysqladmin ping -h localhost -u root -p123456 --silent; do
+#            echo "Waiting for MySQL to start..."
+#            sleep 2
+#          done
 
       - name: Run Flyway Migrations
         working-directory: './backend'
