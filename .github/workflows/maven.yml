@@ -9,8 +9,17 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
-
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: yw
+          MYSQL_USER: root
+          MYSQL_PASSWORD: 123456
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 8
@@ -19,12 +28,11 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
           cache: maven
-      - name: Build and Test with Maven
+
+      - name: Build with Maven
         working-directory: './backend'
+        run: mvn -B package --file pom.xml
         env:
-          DB_HOST: 127.0.0.1  # Your local mysql login info
-          DB_PORT: 3306
-          DB_NAME: yw
-          DB_USER: root
-          DB_PASS: 123456
-        run: mvn -B package test --file pom.xml
+          DATABASE_URL: jdbc:mysql://localhost:3306/yw
+          DATABASE_USERNAME: root
+          DATABASE_PASSWORD: 123456
