@@ -78,9 +78,6 @@
     "coverageReporters": [
       "text"
     ],
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    },
     "transformIgnorePatterns": [
       "/node_modules/(?!react-markdown|remark-gfm|remark-math|rehype-katex|rehype-highlight|prismjs|@marijn/find-cluster-break)/",
       "[/\\\\]node_modules[/\\\\].+[^esm]\\.(js|jsx|mjs|cjs|ts|tsx)$",

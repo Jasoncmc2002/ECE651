@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import EditorDemo from './test/EditorDemo';
-import Navbar from './Navbar';
+import EditorDemo from './components/test/EditorDemo';
+import Navbar from './components/Navbar';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import Login from '../components/Login';
-import NotFound from '../components/NotFound';
-import ProblemManage from '../components/ProblemManage';
-import ProblemSet from '../components/ProblemSet';
-import Register from '../components/Register';
-import SetManage from '../components/SetManage';
-import UserProfile from '../components/UserProfile';
+import Home from './components/Home';
+import Login from './components/Login';
+import NotFound from './components/NotFound';
+import ProblemManage from './components/ProblemManage';
+import ProblemSet from './components/ProblemSet';
+import Register from './components/Register';
+import SetManage from './components/SetManage';
+import UserProfile from './components/UserProfile';
 import { connect } from 'react-redux';
 import { jwtDecode } from "jwt-decode";
-import ACTIONS from '../redux/actions';
-import ProgrammingEditor from './test/ProgrammingEditor';
-import MarkdownEditor from './test/MarkdownEditor';
+import ACTIONS from './redux/actions';
+import ProgrammingEditor from './components/test/ProgrammingEditor';
+import MarkdownEditor from './components/test/MarkdownEditor';
 
 
-import BACKEND_ADDRESS_URL from "./config/BackendAddressURLConfig";
+import BACKEND_ADDRESS_URL from "./components/config/BackendAddressURLConfig";
 
 
-import UserManage from './UserManage';
+import UserManage from './components/UserManage';
 
 
 
