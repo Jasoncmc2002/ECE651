@@ -16,7 +16,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: 123456
           MYSQL_DATABASE: yw
-          MYSQL_USER: root
+          MYSQL_USER: githubCI
           MYSQL_PASSWORD: 123456
         ports:
           - 3306:3306
