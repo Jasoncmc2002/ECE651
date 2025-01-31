@@ -1,4 +1,4 @@
-name: Java CI with Maven for backend sprint1
+name: Java CI with Maven for backend sprint2
 
 on:
   push:
