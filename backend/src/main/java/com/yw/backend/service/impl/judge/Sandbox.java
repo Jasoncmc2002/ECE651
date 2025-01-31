@@ -1,5 +1,6 @@
-package com.yw.backend.test;
+package com.yw.backend.service.impl.judge;
 
+import lombok.Data;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 
@@ -14,11 +15,10 @@ class CodeRunner extends Thread {
 
     @Override
     public void run() throws PyException {
-        System.out.println("Start code runner");  // 断点用于检查运行时间
+        System.out.println("Start code runner");
         try {
             pythonInterpreter.exec(this.code);
         } catch (PyException pyException) {
-//            System.out.println(pyException);
             this.pyException = pyException;
         } finally {
             this.isEndedInTime = true;
@@ -26,6 +26,7 @@ class CodeRunner extends Thread {
     }
 }
 
+@Data
 public class Sandbox {
 
     private String code;
@@ -41,66 +42,33 @@ public class Sandbox {
         this.excTime = excTime;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
 
-    public void setTestIn(String testIn) {
-        this.testIn = testIn;
-    }
-
-    public void setExcTime(int excTime) {
-        this.excTime = excTime;
-    }
-
-    public boolean isEndedInTime() {
-        return isEndedInTime;
-    }
-
-    public String getTestOut() {
-        return testOut;
-    }
-
-    public boolean isEndedNormally() {
-        return isEndedNormally;
-    }
-
-    public void run() throws InterruptedException {
-//        System.out.println(this.code);
-//        System.out.println(this.testIn);
+    public void run() throws InterruptedException, PyException {
         CodeRunner codeRunner = new CodeRunner();
-        codeRunner.setDaemon(true);  // 主进程退出，守护进程退出，在start之前调用
+        codeRunner.setDaemon(true);
         codeRunner.code = this.code;
 
-
         try (PythonInterpreter pythonInterpreter = new PythonInterpreter()) {
-            // 连接输入输出
+            pythonInterpreter.exec("from __future__ import print_function");
+            pythonInterpreter.exec("def input(prompt=''):\n" +
+                    "    return raw_input(prompt)");
+
             StringReader stringReader = new StringReader(this.testIn);
             StringWriter stringWriter = new StringWriter();
             pythonInterpreter.setIn(stringReader);
             pythonInterpreter.setOut(stringWriter);
-
-            // 赋值解释器并执行
             codeRunner.pythonInterpreter = pythonInterpreter;
             codeRunner.start();
             Thread.sleep(excTime);
-
-            // 复制是否执行完毕
+            pythonInterpreter.close();
             this.isEndedInTime = codeRunner.isEndedInTime;
-
-            // 检查解释器是否有错误
             if (codeRunner.pyException != null) {
                 throw codeRunner.pyException;
-                // 接下来的代码看catch部分
             }
-
-//            System.out.println(stringWriter);
-            // 复制输出结果
             this.testOut = stringWriter.toString();
 
 
         } catch (PyException pyException) {
-//            System.out.println(pyException);
             this.testOut = pyException.toString();
             this.isEndedInTime = true;
             this.isEndedNormally = false;
