@@ -11,11 +11,14 @@ package com.yw.backend.test.user.account;
 //import org.mockito.MockitoAnnotations;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class RegisterServiceImplTest {
 /**
     @InjectMocks
