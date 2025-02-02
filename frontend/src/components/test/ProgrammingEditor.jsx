@@ -11,7 +11,7 @@ class ProgrammingEditor extends Component {
         code: '',
         error_message: '',
         res_message: '',
-        time_limit: 400,  // 单位: ms
+        time_limit: 400,  // Unit: ms
 
         test_input: '',
         test_output: '',
@@ -58,7 +58,7 @@ class ProgrammingEditor extends Component {
             },
             error: (resp) => {
                 this.setState({
-                    error_message: "连接服务器错误，请检查console",
+                    error_message: "Error connecting to server, please check console",
                     is_loading: false
                 })
             }
@@ -118,7 +118,7 @@ class ProgrammingEditor extends Component {
         return (
             <div className="container">
                 <ContendCard>
-                    <h4 className='text-center'>测试用例调试工具</h4>
+                    <h4 className='text-center'>Test Case Checking Tool</h4>
                     <hr />
                     <CodeMirror
                         value={this.state.code}
@@ -145,7 +145,7 @@ class ProgrammingEditor extends Component {
                                 <div className="col">
                                     <div className="row">
                                         <div className="col-auto">
-                                            <label htmlFor="time_limit" className="col-form-label">时间限制</label>
+                                            <label htmlFor="time_limit" className="col-form-label">Time Limit</label>
                                         </div>
                                         <div className="col">
                                             <div className="input-group">
@@ -156,12 +156,12 @@ class ProgrammingEditor extends Component {
                                     </div>
                                 </div>
                                 <div className="col-auto">
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => this.handleTest()} disabled={this.state.is_loading || this.state.code.length === 0}>调试代码</button>
+                                    <button type="button" className="btn btn-outline-secondary" onClick={() => this.handleTest()} disabled={this.state.is_loading || this.state.code.length === 0}>Run Test</button>
                                 </div>
                             </div>
                             {/* <div className=" float-end">
-                                <button type="button" className="btn btn-outline-secondary" onClick={() => this.handleTest()} disabled={this.state.is_loading}>调试代码</button>
-                                <button type="button" className="btn btn-success ms-md-3" onClick={() => this.handleSubmit()} disabled={this.state.is_loading}>提交代码</button>
+                                <button type="button" className="btn btn-outline-secondary" onClick={() => this.handleTest()} disabled={this.state.is_loading}>Run Test</button>
+                                <button type="button" className="btn btn-success ms-md-3" onClick={() => this.handleSubmit()} disabled={this.state.is_loading}>Submit</button>
                             </div> */}
                         </div>
                     </div>
@@ -172,16 +172,16 @@ class ProgrammingEditor extends Component {
                         <div className="accordion-item">
                             <h2 className="accordion-header">
                                 <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    调试代码
+                                    Test Case
                                 </button>
                             </h2>
                             <div id="collapseOne" className="accordion-collapse collapse show" data-bs-parent="#testProgramming">
                                 <div className="accordion-body">
-                                    <label htmlFor="test_input">输入</label>
+                                    <label htmlFor="test_input">Input</label>
                                     <br />
                                     <textarea className='form-control mt-2' rows={rows} id='test_input' style={{ fontFamily: "monospace", resize: "auto none", textWrap: "nowrap" }} onChange={(e) => { this.setState({ test_input: e.target.value }) }} />
                                     <div className="mt-2">
-                                        <span>输出</span>
+                                        <span>Output</span>
                                         <div className="card card-body mt-2" style={{ padding: "6px 12px" }}>
                                             <pre className='mb-0' style={{ minHeight: "24px", fontSize: "16px" }}>{this.state.test_output + "\n"}</pre>
                                         </div>
