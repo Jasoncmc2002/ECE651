@@ -15,6 +15,14 @@ public class SpecialJudgeController {
     @Autowired
     private SpecialJudgeService specialJudgeService;
 
+    /**
+     * Controller method to handle special judge requests.
+     * This method receives data containing code, test input, and a time limit,
+     * then calls the special judge service to evaluate the code.
+     *
+     * @param data A map containing the request parameters: "code", "testInput", and "timeLimit".
+     * @return A map containing the evaluation result or an error message.
+     */
     @PostMapping("/judge/special_judge/")
     public Map<String, String> specialJudge(@RequestParam Map<String, String> data) {
         String code = data.get("code");
