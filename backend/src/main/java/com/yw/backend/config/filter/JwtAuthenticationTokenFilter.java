@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yw.backend.mapper.UserMapper;
 import com.yw.backend.pojo.User;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
-import com.yw.backend.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +18,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import com.yw.backend.utils.JwtUtil;
+import org.jetbrains.annotations.NotNull;
 
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {

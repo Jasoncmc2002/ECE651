@@ -24,11 +24,11 @@ public class RegisterServiceImpl implements RegisterService {
     public Map<String, String> register(String username, String password, String confirmedPassword) {
         Map<String, String> map = new HashMap<>();
         if (username == null) {
-            map.put("error_message", "username cannot be empty");
+            map.put("error_message", "Username cannot be empty");
             return map;
         }
         if (password == null || confirmedPassword == null) {
-            map.put("error_message", "password cannot be empty");
+            map.put("error_message", "Password cannot be empty");
             return map;
         }
 
@@ -36,27 +36,27 @@ public class RegisterServiceImpl implements RegisterService {
 //        password = password.trim();
 //        confirmedPassword = confirmedPassword.trim();
         if (username.length() == 0) {
-            map.put("error_message", "username cannot be empty");
+            map.put("error_message", "Username cannot be empty");
             return map;
         }
 
         if (username.length() > 100) {
-            map.put("error_message", "Username length cannot exceed 100");
+            map.put("error_message", "Username length cannot exceed 100 characters");
             return map;
         }
 
         if (password.length() == 0 || confirmedPassword.length() == 0) {
-            map.put("error_message", "password cannot be empty");
+            map.put("error_message", "Password cannot be empty");
             return map;
         }
 
         if (!password.equals(confirmedPassword)) {
-            map.put("error_message", "The password entered twice is inconsistent");
+            map.put("error_message", "Confirmed password did not match");
             return map;
         }
 
         if (password.length() > 100 || confirmedPassword.length() > 100) {
-            map.put("error_message", "Password length cannot exceed 100");
+            map.put("error_message", "Password length cannot exceed 100 characters");
             return map;
         }
 
@@ -64,12 +64,12 @@ public class RegisterServiceImpl implements RegisterService {
         queryWrapper.eq("username", username);
         List<User> users = userMapper.selectList(queryWrapper);
         if (!users.isEmpty()) {
-            map.put("error_message", "The username already exists");
+            map.put("error_message", "Username already exists");
             return map;
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        String name = "Default User";
+        String name = "Default username";
         // 计算id
         int userMaxId = 0;
         List<User> userList = userMapper.selectList(null);
