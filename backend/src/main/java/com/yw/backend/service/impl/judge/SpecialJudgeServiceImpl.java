@@ -14,13 +14,12 @@ import java.util.Map;
 public class SpecialJudgeServiceImpl implements SpecialJudgeService {
     @Override
     public Map<String, String> specialJudge(String code, String testInput, int timeLimit) {
-        // 检查权限
+
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
 
-        // 检查权限
         if (user.getPermission() < 1) {
             System.out.println("No permission to use program debugging tools");
             Map<String, String> resp = new HashMap<>();
