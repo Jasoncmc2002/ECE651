@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+//test for special judge service
 @SpringBootTest
 public class SpecialJudgeServiceImplTest {
 
