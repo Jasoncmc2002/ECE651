@@ -60,6 +60,66 @@ public class ObjectiveProblemManageServiceImplTest {
 
         assertEquals("Do not have permission to modify problems", response.get("error_message"));
     }
+    @Test
+    public void testUpdate_AnswerTooLong() {
+        when(user.getPermission()).thenReturn(2);
+        ObjectiveProblem objectiveProblem = new ObjectiveProblem();
+        objectiveProblem.setObjectiveProblemId(1);
+        objectiveProblem.setAuthorId(1);
+        when(objectiveProblemMapper.selectList(any())).thenReturn(Collections.singletonList(objectiveProblem));
+
+        StringBuilder longTagBuilder = new StringBuilder();
+        for (int i = 0; i < 1025; i++) {
+            longTagBuilder.append("a");
+        }
+        String longAnswer = longTagBuilder.toString();
+        Map<String, String> response = objectiveProblemManageService.update(1, "description", 10, longAnswer, "tag", 3);
+
+        assertEquals("Standard answer cannot exceed 1024 characters", response.get("error_message"));
+    }
+    @Test
+    public void testUpdate_TagEmpty() {
+        when(user.getPermission()).thenReturn(2);
+        ObjectiveProblem objectiveProblem = new ObjectiveProblem();
+        objectiveProblem.setObjectiveProblemId(1);
+        objectiveProblem.setAuthorId(1);
+        when(objectiveProblemMapper.selectList(any())).thenReturn(Collections.singletonList(objectiveProblem));
+
+        Map<String, String> response = objectiveProblemManageService.update(1, "description", 10, "answer", "", 3);
+
+        assertEquals("Label cannot be empty", response.get("error_message"));
+    }
+
+    @Test
+    public void testUpdate_TagTooLong() {
+        when(user.getPermission()).thenReturn(2);
+        ObjectiveProblem objectiveProblem = new ObjectiveProblem();
+        objectiveProblem.setObjectiveProblemId(1);
+        objectiveProblem.setAuthorId(1);
+        when(objectiveProblemMapper.selectList(any())).thenReturn(Collections.singletonList(objectiveProblem));
+
+        StringBuilder longTagBuilder = new StringBuilder();
+        for (int i = 0; i < 1025; i++) {
+            longTagBuilder.append("a");
+        }
+        String longTag = longTagBuilder.toString();
+        Map<String, String> response = objectiveProblemManageService.update(1, "description", 10, "answer", longTag, 3);
+
+        assertEquals("Label cannot exceed 100 characters", response.get("error_message"));
+    }
+
+    @Test
+    public void testUpdate_DifficultyOutOfRange() {
+        when(user.getPermission()).thenReturn(2);
+        ObjectiveProblem objectiveProblem = new ObjectiveProblem();
+        objectiveProblem.setObjectiveProblemId(1);
+        objectiveProblem.setAuthorId(1);
+        when(objectiveProblemMapper.selectList(any())).thenReturn(Collections.singletonList(objectiveProblem));
+
+        Map<String, String> response = objectiveProblemManageService.update(1, "description", 10, "answer", "tag", 6);
+
+        assertEquals("Difficulty must be a positive integer between 1 and 5", response.get("error_message"));
+    }
 
     @Test
     public void testUpdate_ObjectiveProblemNotExist() {
