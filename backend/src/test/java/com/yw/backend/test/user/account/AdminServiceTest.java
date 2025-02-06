@@ -109,6 +109,7 @@ public class AdminServiceTest {
         Map<String, String> result = adminService.adminUpdateUserPassword(1, longPassword, longPassword);
         assertEquals("Password length cannot be greater than 100", result.get("error_message"));
     }
+
     @Test
     public void testAdminSearchUser() {
         setAuthenticationToken(adminUser);
