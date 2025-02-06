@@ -60,6 +60,7 @@ public class ObjectiveProblemManageServiceImplTest {
 
         assertEquals("Do not have permission to modify problems", response.get("error_message"));
     }
+
     @Test
     public void testUpdate_AnswerTooLong() {
         when(user.getPermission()).thenReturn(2);
@@ -77,6 +78,7 @@ public class ObjectiveProblemManageServiceImplTest {
 
         assertEquals("Standard answer cannot exceed 1024 characters", response.get("error_message"));
     }
+
     @Test
     public void testUpdate_TagEmpty() {
         when(user.getPermission()).thenReturn(2);
