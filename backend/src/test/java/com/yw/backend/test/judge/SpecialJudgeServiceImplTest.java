@@ -33,7 +33,7 @@ public class SpecialJudgeServiceImplTest {
         MockitoAnnotations.openMocks(this);
 
         //Create user
-        mockUser = new User(1, "testUser", "password123", "Test User", 0, "photo.jpg"); // 无权限用户
+        mockUser = new User(1, "testUser", "password123", "Test User", 0, "photo.jpg");
         mockUserDetails = new UserDetailsImpl(mockUser);
     }
 
