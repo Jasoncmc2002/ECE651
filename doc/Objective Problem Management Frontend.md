@@ -30,6 +30,7 @@ so that I can create, edit, delete objective problems.
 # Quality Requirements
 
 - There should be authentication when using the objective problem management: no access for students, access to owned problems for teachers (can only access problems created by themselves), full access to any problems for administrators. "Access" means edit and delete.
+- There should be a main page for both objective and programming problems sub-pages, like a fork in the road. Sub-pages should have a similar UI design, easy to switch between them like using tabs on Chrome.
 
 # API Used
 
