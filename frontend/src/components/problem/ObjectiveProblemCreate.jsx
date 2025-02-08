@@ -92,7 +92,7 @@ class ObjectiveProblemCreate extends Component {
             });
         } else if (this.state.op_correct_answer.length > 1024) {
             this.setState({
-                error_message: 'The answer cannot exceed 1024 characters, current length:' + this.state.op_correct_answer.length,
+                error_message: 'The answer cannot exceed 1024 characters, current length: ' + this.state.op_correct_answer.length,
                 is_loading: false,
             });
         } else {
