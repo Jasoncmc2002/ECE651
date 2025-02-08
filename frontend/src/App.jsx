@@ -23,6 +23,7 @@ import BACKEND_ADDRESS_URL from "./components/config/BackendAddressURLConfig";
 
 import UserManage from './components/UserManage';
 import ObjectiveProblemManage from './components/problem/ObjectiveProblemManage';
+import ObjectiveProblemCreate from './components/problem/ObjectiveProblemCreate';
 
 
 
@@ -94,7 +95,7 @@ class App extends Component {
                     {/* Problem Management */}
                     <Route path='/problem_manage/' element={<ProblemManage />} />
                     <Route path='/problem_manage/objective_problem_manage/' element={<ObjectiveProblemManage />} />
-
+                    <Route path='/problem_manage/objective_problem_manage/create/' element={<ObjectiveProblemCreate />} />
 
 
                     {/* My Problem Set */}
