@@ -74,7 +74,7 @@ describe('UserManage Component', () => {
             </Provider>
         );
 
-        expect(screen.getByText('You do not have permission to view this page')).toBeInTheDocument();
+        expect(screen.getByText('You do not have permission to access this page')).toBeInTheDocument();
     });
 
     test('handles empty username on target change', async () => {
