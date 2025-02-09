@@ -840,7 +840,7 @@ class UserManage extends Component {
                                 <div className="row justify-content-md-center">
                                     <h1 className="text-center">User Management</h1>
                                     <hr />
-                                    <h4 className="text-center">You do not have permission to view this page</h4>
+                                    <h4 className="text-center">You do not have permission to access this page</h4>
                                 </div>
                             </ContendCard>
                         </div>
