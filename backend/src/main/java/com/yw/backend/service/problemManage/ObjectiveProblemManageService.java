@@ -7,4 +7,7 @@ public interface ObjectiveProblemManageService {
     List<Map<String, String>> getAll();
 
     Map<String, String> getOne(int objectiveProblemId);
+    Map<String, String> update(int objectiveProblemId, String opDescription, int opTotalScore, String opCorrectAnswer, String opTag, int opDifficulty);
+
+
 }
