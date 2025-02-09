@@ -12,7 +12,6 @@ import java.util.Map;
 public class ObjectiveProblemManageController {
     @Autowired
     private ObjectiveProblemManageService objectiveProblemManageService;
-
     @GetMapping("/problem_manage/objective_problem_manage/all/")
     public List<Map<String, String>> getAll() {
         return objectiveProblemManageService.getAll();
@@ -61,5 +60,43 @@ public class ObjectiveProblemManageController {
         }
 
         return objectiveProblemManageService.update(objectiveProblemId, opDescription, opTotalScore, opCorrectAnswer, opTag, opDifficulty);
+    }
+    @PostMapping("/problem_manage/objective_problem_manage/")
+    public Map<String, String> create(@RequestParam Map<String, String> data) {
+        System.out.println(data);
+        String opDescription = data.get("opDescription");
+        int opTotalScore;
+        try {
+            opTotalScore = Integer.parseInt(data.get("opTotalScore"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the question score must be a positive integer");
+            return resp;
+        }
+        String opCorrectAnswer = data.get("opCorrectAnswer");
+        String opTag = data.get("opTag");
+        int opDifficulty;
+        try {
+            opDifficulty = Integer.parseInt(data.get("opDifficulty"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the difficulty coefficient must be a positive integer");
+            return resp;
+        }
+        return objectiveProblemManageService.create(opDescription, opTotalScore, opCorrectAnswer, opTag, opDifficulty);
+    }
+
+    @DeleteMapping("/problem_manage/objective_problem_manage/")
+    public Map<String, String> delete(@RequestParam Map<String, String> data) {
+        // check and read id
+        int objectiveProblemId;
+        try {
+            objectiveProblemId = Integer.parseInt(data.get("objectiveProblemId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "invalid objective problem ID");
+            return resp;
+        }
+        return objectiveProblemManageService.delete(objectiveProblemId);
     }
 }

@@ -8,6 +8,8 @@ public interface ObjectiveProblemManageService {
 
     Map<String, String> getOne(int objectiveProblemId);
     Map<String, String> update(int objectiveProblemId, String opDescription, int opTotalScore, String opCorrectAnswer, String opTag, int opDifficulty);
+    Map<String, String> create(String opDescription, int opTotalScore, String opCorrectAnswer, String opTag, int opDifficulty);
 
+    Map<String, String> delete(int objectiveProblemId);
 
 }
