@@ -9,6 +9,7 @@ import com.yw.backend.pojo.User;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.yw.backend.service.impl.problemManage.ObjectiveProblemManageServiceImpl;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -82,6 +83,10 @@ class ObjectiveProblemGetAllServiceTest {
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(mockUserDetails, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.yw.backend.pojo.ObjectiveProblem;
 import com.yw.backend.pojo.User;
 import com.yw.backend.service.impl.problemManage.ObjectiveProblemManageServiceImpl;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -47,6 +48,10 @@ public class ObjectiveProblemManageServiceImplTest {
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authToken);
         SecurityContextHolder.setContext(securityContext);
+    }
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     private void setAuthenticationUser(int permission) {

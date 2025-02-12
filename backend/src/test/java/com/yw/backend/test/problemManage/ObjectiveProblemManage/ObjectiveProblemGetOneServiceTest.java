@@ -6,6 +6,7 @@ import com.yw.backend.mapper.UserMapper;
 import com.yw.backend.pojo.User;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
 import com.yw.backend.service.impl.problemManage.ObjectiveProblemManageServiceImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -68,6 +69,10 @@ class ObjectiveProblemGetOneServiceTest {
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(mockUserDetails, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
