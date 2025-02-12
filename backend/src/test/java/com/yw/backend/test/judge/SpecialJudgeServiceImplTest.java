@@ -3,6 +3,7 @@ package com.yw.backend.test.judge;
 import com.yw.backend.pojo.User;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
 import com.yw.backend.service.judge.SpecialJudgeService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -35,6 +36,10 @@ public class SpecialJudgeServiceImplTest {
         //Create user
         mockUser = new User(1, "testUser", "password123", "Test User", 0, "photo.jpg");
         mockUserDetails = new UserDetailsImpl(mockUser);
+    }
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     private void setAuthenticationUser(int permission) {
