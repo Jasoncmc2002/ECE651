@@ -1,9 +1,7 @@
-name: Java CI with Maven for backend sprint1
+name: Backend CI
 
 on:
   push:
-    branches: [ "back-end-master","main","back-end-dev-sprint[0-9]+"]
-  pull_request:
     branches: [ "back-end-master","main","back-end-dev-sprint[0-9]+"]
 
 jobs:
