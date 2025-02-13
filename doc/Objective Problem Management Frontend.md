@@ -15,7 +15,7 @@ so that I can create, edit, delete objective problems.
 | **Field**            | **Type**                    | **Constrain** | **Field Comments** |
 | -------------------- | --------------------------- | ------------- | ------------------ |
 | objective_problem_id | Integer                     | PK            | 客观题实体主键     |
-| user_id              | Integer                     | FK            | 客观题作者         |
+| user_id              | Integer                     | FK            | 客观题作者ID       |
 | op_description       | Variable characters (10000) | Not Null      | 客观题题干         |
 | op_total_score       | Integer                     | Not Null      | 客观题总分         |
 | op_correct_answer    | Variable characters (1024)  | Not Null      | 客观题答案         |
@@ -40,7 +40,7 @@ so that I can create, edit, delete objective problems.
 
 **Note 3: 需要验证的API都是Bearer验证，前端Ajax请求例子如下**
 
-![Screenshot 2025-02-06 at 11.08.23 AM](Objective%20Problem%20Management.assets/Screenshot%202025-02-06%20at%2011.08.23%E2%80%AFAM.png)
+![Screenshot 2025-02-06 at 11.08.23 AM](Objective%20Problem%20Management%20Backend.assets/Screenshot%202025-02-06%20at%2011.08.23%E2%80%AFAM.png)
 
 | 请求的Key | 含义                                                         |
 | --------- | ------------------------------------------------------------ |
