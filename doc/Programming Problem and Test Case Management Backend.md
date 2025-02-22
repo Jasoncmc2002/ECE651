@@ -46,7 +46,7 @@ so that my created test cases are correct. (Note: already complete by the code j
 | tc_input       | Variable characters (1024) | Not Null      | 测试用例输入       |
 | tc_output      | Variable characters (1024) | Not Null      | 测试用例期待输出   |
 
-## `p_judge_code` Explained 函数编程题测评代码说明
+## `p_judge_code` Code Completion Judge Code Explained 函数编程题测评代码说明
 
 `programming`数据表中`p_judge_code`用于函数编程题的测评。函数编程题是一种只要求写片段代码的编程题，通过规定函数的输入参数和输出参数，让学生只写一个函数代码片段，从而节省学生处理输入数据解析(parse)和输出数据格式的工作；让学生能够专注于函数算法的设计，省略了输入输出的设计。
 
