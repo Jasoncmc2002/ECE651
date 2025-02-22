@@ -26,6 +26,7 @@ import ObjectiveProblemManage from './components/problem/ObjectiveProblemManage'
 import ObjectiveProblemCreate from './components/problem/ObjectiveProblemCreate';
 import ObjectiveProblemPreview from './components/problem/ObjectiveProblemPreview';
 import ProgrammingManage from './components/problem/ProgrammingManage';
+import ProgrammingCreate from './components/problem/ProgrammingCreate';
 
 
 
@@ -100,6 +101,7 @@ class App extends Component {
                     <Route path='/problem_manage/objective_problem_manage/create/' element={<ObjectiveProblemCreate />} />
                     <Route path='/problem_manage/objective_problem_manage/:objective_problem_id/' element={<ObjectiveProblemPreview />} />
                     <Route path='/problem_manage/programming_manage/' element={<ProgrammingManage />} />
+                    <Route path='/problem_manage/programming_manage/create/' element={<ProgrammingCreate />} />
 
                     {/* My Problem Set */}
                     <Route path='/problem_set/student_view/' element={<ProblemSet />} />
