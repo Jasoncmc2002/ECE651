@@ -36,10 +36,6 @@ public class SpecialJudgeServiceImplTest {
         mockUser = new User(1, "testUser", "password123", "Test User", 0, "photo.jpg");
         mockUserDetails = new UserDetailsImpl(mockUser);
     }
-    @AfterEach
-    void tearDown() {
-        SecurityContextHolder.clearContext();
-    }
 
     private void setAuthenticationUser(int permission) {
         // use to change user permission level
@@ -50,6 +46,10 @@ public class SpecialJudgeServiceImplTest {
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(mockUserDetails, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
