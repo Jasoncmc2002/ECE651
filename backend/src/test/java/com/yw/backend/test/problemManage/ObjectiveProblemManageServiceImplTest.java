@@ -106,7 +106,6 @@ public class ObjectiveProblemManageServiceImplTest {
 
     @Test
     void testCreateObjectiveProblem_DescriptionTooLong() {
-        // 生成 10001 个 'A'
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 10001; i++) {
             sb.append("A");
