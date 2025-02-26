@@ -3,6 +3,7 @@ package com.yw.backend.test.judge;
 import com.yw.backend.pojo.User;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
 import com.yw.backend.service.judge.SpecialJudgeService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-//test for special judge service
+
 @SpringBootTest
 public class SpecialJudgeServiceImplTest {
 
@@ -45,6 +46,10 @@ public class SpecialJudgeServiceImplTest {
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(mockUserDetails, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
