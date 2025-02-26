@@ -74,7 +74,7 @@ class ObjectiveProblemPreview extends Component {
                 if (resp.error_message === "success") {
                     // navigate
                     this.setState({
-                        error_message: "删除成功",
+                        error_message: "Deleted successfully",
                         is_loading: false,
                     });
                     this.props.navigate("/problem_manage/objective_problem_manage/");
