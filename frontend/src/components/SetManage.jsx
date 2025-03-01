@@ -48,7 +48,7 @@ class SetManage extends Component {
             return (
                 <React.Fragment>
                     <div className="d-flex justify-content-center mb-3">
-                        <img src={Brand} className='img-fluid' alt="Brand" style={{ maxWidth: "100%" }}></img>
+                        <img src={Brand} className='img-fluid' alt="Brand" style={{ maxWidth: "50%" }}></img>
                     </div>
                     <h4 className="text-center mb-3">{greetings}, {this.props.name}</h4>
                     <hr />
