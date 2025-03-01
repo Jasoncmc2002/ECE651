@@ -29,6 +29,7 @@ import ProgrammingManage from './components/problem/ProgrammingManage';
 import ProgrammingCreate from './components/problem/ProgrammingCreate';
 import ProgrammingPreview from './components/problem/ProgrammingPreview';
 import AssignmentManage from './components/set/AssignmentManage';
+import ExamManage from './components/set/ExamManage';
 
 
 
@@ -114,6 +115,7 @@ class App extends Component {
                     {/* Problem Set Management */}
                     <Route path='/set_manage/' element={<SetManage />} />
                     <Route path='/set_manage/assignment/' element={<AssignmentManage />} />
+                    <Route path='/set_manage/exam/' element={<ExamManage />} />
 
 
                     {/* User Account System */}
