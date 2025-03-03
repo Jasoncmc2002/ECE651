@@ -52,5 +52,4 @@ Temporary Items
 .apdisk
 
 **/.idea
-
-frontend
+**/.sync.ffs_db
