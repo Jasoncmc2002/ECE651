@@ -64,14 +64,14 @@ public class SetManageServiceImplTest {
         user.setPermission(0);
         setAuthentication(user);
         Map<String, String> result = setManageService.getOne(1);
-        assertEquals("Permission denied", result.get("error_message"));
+        assertEquals("No permission to obtain the problem set", result.get("error_message"));
 
         // Test no such problem set
         user.setPermission(1);
         setAuthentication(user);
         when(problemSetMapper.selectList(any())).thenReturn(Collections.emptyList());
         result = setManageService.getOne(1);
-        assertEquals("No such problem set", result.get("error_message"));
+        assertEquals("No problem set with this ID", result.get("error_message"));
 
         // Test success
         ProblemSet problemSet = new ProblemSet();
