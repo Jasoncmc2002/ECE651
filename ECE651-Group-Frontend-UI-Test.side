@@ -2475,6 +2475,175 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "934c861d-7927-4e68-bdeb-93ffd0eed37d",
+    "name": "Set View",
+    "commands": [{
+      "id": "faa90667-12cc-4391-a2dc-29718f0cbc49",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "27cd1899-8b43-4892-8ce1-0972a514ebbf",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1600x827",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "08e949ef-954e-4e3f-9ede-9ab732086267",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign In",
+      "targets": [
+        ["linkText=Sign In", "linkText"],
+        ["css=.col:nth-child(1) > .text-center > .icon-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign In')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/div/div[2]/div/div/h4/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/')]", "xpath:href"],
+        ["xpath=//h4/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f436249d-3877-48f2-90af-a9e1f830bb9a",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "01"
+    }, {
+      "id": "a4ce4800-7616-46e6-a34a-edb2bd8ddc77",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "pyw"
+    }, {
+      "id": "4aea4869-49cd-435e-87b1-36ef9912f0af",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-check-label",
+      "targets": [
+        ["css=.form-check-label", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[3]/label", "xpath:idRelative"],
+        ["xpath=//div[3]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Keep me logged in')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0f54a8b9-a17a-4f85-a16f-025c7f257c3e",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a411e631-2df1-4ddd-b963-d9b10e1139d0",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "02"
+    }, {
+      "id": "ce7a9dde-c375-44a1-ace7-ced8ba615db7",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "pyxc"
+    }, {
+      "id": "bfe61acf-56a5-411c-abaa-1c9197baa3ed",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2444b475-8de5-4b00-b190-97b018576a5b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(2) > .col:nth-child(1) .icon-link",
+      "targets": [
+        ["css=.row:nth-child(2) > .col:nth-child(1) .icon-link", "css:finder"],
+        ["xpath=(//a[contains(text(),'Problem Set Management')])[2]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/div/div[2]/div[2]/div/h4/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/set_manage/')])[3]", "xpath:href"],
+        ["xpath=//div[2]/div/h4/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d2b23e11-be48-4b2c-a37e-90ddab78fedf",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Assignments",
+      "targets": [
+        ["linkText=Assignments", "linkText"],
+        ["css=.col:nth-child(1) > .text-center > .icon-link", "css:finder"],
+        ["xpath=(//a[contains(text(),'Assignments')])[2]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/div/div[2]/div/div/h4/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/set_manage/assignment/')])[2]", "xpath:href"],
+        ["xpath=//h4/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f087fbe2-db5e-4d16-ae80-5bfa17467422",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Exams",
+      "targets": [
+        ["linkText=Exams", "linkText"],
+        ["css=.nav > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=(//a[contains(text(),'Exams')])[2]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/set_manage/exam/')])[2]", "xpath:href"],
+        ["xpath=//div/div/div/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "762434ec-663d-45dc-8679-8d5bd90b356e",
