@@ -1,367 +1,270 @@
-package com.yw.backend.service.impl.setManage;
+package com.yw.backend.controller.setManage;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.yw.backend.mapper.*;
-import com.yw.backend.pojo.*;
-import com.yw.backend.service.impl.utils.UserDetailsImpl;
 import com.yw.backend.service.setManage.SetManageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import java.util.*;
+import org.springframework.web.bind.annotation.*;
 
-@Service
-public class SetManageServiceImpl implements SetManageService {
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class SetManageController {
     @Autowired
-    private ProblemSetMapper problemSetMapper;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private StudentNPsMapper studentNPsMapper;
-    @Autowired
-    private ObjectiveProblemAnswerMapper objectiveProblemAnswerMapper;
-    @Autowired
-    private ProgrammingAnswerMapper programmingAnswerMapper;
-
-
-
-    @Override
-    public Map<String, String> getOne(int problemSetId) {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
+    private SetManageService setManageService;
+    @PutMapping("/set_manage/")
+    public Map<String, String> update(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Permission denied");
+            resp.put("error_message", "Invalid probelm set ID");
             return resp;
         }
 
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        if (problemSetList.isEmpty()) {
+        String psName = data.get("psName");
+
+        LocalDateTime psStartTime;
+        try {
+            psStartTime = LocalDateTime.parse(data.get("psStartTime"));
+        } catch (DateTimeParseException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "No such problem set");
+            resp.put("error_message", "Invalid problem set start time");
             return resp;
         }
-        ProblemSet problemSet = problemSetList.get(0);
-        Map<String, String> resp = new HashMap<>();
-        resp.put("error_message", "success");
-        resp.put("problem_set_id", problemSet.getProblemSetId().toString());
-        resp.put("ps_name", problemSet.getPsName());
-        Integer authorId = problemSet.getPsAuthorId();
-        resp.put("ps_author_id", authorId.toString());
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("user_id", authorId);
-        User author = userMapper.selectOne(userQueryWrapper);
-        resp.put("ps_author_name", author.getName());
-        resp.put("ps_start_time", problemSet.getPsStartTime().toString());
-        resp.put("ps_end_time", problemSet.getPsEndTime().toString());
-        resp.put("duration", problemSet.getDuration().toString());
-        return resp;
+
+        LocalDateTime psEndTime;
+        try {
+            psEndTime = LocalDateTime.parse(data.get("psEndTime"));
+        } catch (DateTimeParseException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set end time");
+            return resp;
+        }
+
+        int duration;
+        try {
+            duration = Integer.parseInt(data.get("duration"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set test duration");
+            return resp;
+        }
+
+        return setManageService.update(problemSetId, psName, psStartTime, psEndTime, duration);
     }
 
-    @Override
+    @GetMapping("/set_manage/")
+    public Map<String, String> getOne(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set ID");
+            return resp;
+        }
+        return setManageService.getOne(problemSetId);
+    }
+
+
+    @GetMapping("/set_manage/programming/search/")
+    public List<Map<String, String>> searchProgramming(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "Invalid problem set ID");
+            resp.add(map);
+            return resp;
+        }
+
+        String pTitle = data.get("pTitle");
+        String pTag = data.get("pTag");
+
+        int pDifficultyMin;
+        try {
+            pDifficultyMin = Integer.parseInt(data.get("pDifficultyMin"));
+        } catch (NumberFormatException e) {
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "Invalid min difficulty");
+            resp.add(map);
+            return resp;
+        }
+
+        int pDifficultyMax;
+        try {
+            pDifficultyMax = Integer.parseInt(data.get("pDifficultyMax"));
+        } catch (NumberFormatException e) {
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "Inval max difficulty");
+            resp.add(map);
+            return resp;
+        }
+
+        return setManageService.searchProgramming(problemSetId, pTitle, pTag, pDifficultyMin, pDifficultyMax);
+    }
+
+    @PostMapping("/set_manage/programming/")
+    public Map<String, String> addProgramming(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set ID");
+            return resp;
+        }
+
+        int programmingId;
+        try {
+            programmingId = Integer.parseInt(data.get("programmingId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem ID");
+            return resp;
+        }
+
+        return setManageService.addProgramming(problemSetId, programmingId);
+    }
+
+    @DeleteMapping("/set_manage/programming/")
+    public Map<String, String> deleteProgramming(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set ID");
+            return resp;
+        }
+
+        int programmingId;
+        try {
+            programmingId = Integer.parseInt(data.get("programmingId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem ID");
+            return resp;
+        }
+
+        return setManageService.deleteProgramming(problemSetId, programmingId);
+    }
+
+    @GetMapping("/set_manage/programming/get_added/")
+    public List<Map<String, String>> getAddedProgramming(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "Invalid problem set ID");
+            resp.add(map);
+            return resp;
+        }
+        return setManageService.getAddedProgramming(problemSetId);
+    }
+
+    
+    @GetMapping("/set_manage/assignment/")
     public List<Map<String, String>> getAssignmentList() {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
-            System.out.println("Problem set get list permission denied");
-            List<Map<String, String>> resp = new ArrayList<>();
-            Map<String, String> map = new HashMap<>();
-            map.put("error_message", "Problem set get list permission denied");
-            resp.add(map);
-            return resp;
-        }
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.eq("duration", 0);
-        problemSetQueryWrapper.orderByDesc("problem_set_id");
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        List<Map<String, String>> resp = new ArrayList<>();
-        for (ProblemSet problemSet : problemSetList) {
-            Map<String, String> map = new HashMap<>();
-            map.put("problem_set_id", problemSet.getProblemSetId().toString());
-            map.put("ps_name", problemSet.getPsName());
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("user_id", problemSet.getPsAuthorId());
-            User author = userMapper.selectOne(userQueryWrapper);
-            map.put("ps_author_name", author.getName());
-            map.put("ps_start_time", problemSet.getPsStartTime().toString());
-            map.put("ps_end_time", problemSet.getPsEndTime().toString());
-            resp.add(map);
-        }
-        return resp;
+        return setManageService.getAssignmentList();
     }
 
-    @Override
+    @GetMapping("/set_manage/exam/")
     public List<Map<String, String>> getExamList() {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
-            System.out.println("Problem set get list permission denied");
-            List<Map<String, String>> resp = new ArrayList<>();
-            Map<String, String> map = new HashMap<>();
-            map.put("error_message", "Problem set get list permission denied");
-            resp.add(map);
-            return resp;
-        }
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.ne("duration", 0);
-        problemSetQueryWrapper.orderByDesc("problem_set_id");
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        List<Map<String, String>> resp = new ArrayList<>();
-        for (ProblemSet problemSet : problemSetList) {
-            Map<String, String> map = new HashMap<>();
-            map.put("problem_set_id", problemSet.getProblemSetId().toString());
-            map.put("ps_name", problemSet.getPsName());
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("user_id", problemSet.getPsAuthorId());
-            User author = userMapper.selectOne(userQueryWrapper);
-            map.put("ps_author_name", author.getName());
-            map.put("ps_start_time", problemSet.getPsStartTime().toString());
-            map.put("ps_end_time", problemSet.getPsEndTime().toString());
-            map.put("duration", problemSet.getDuration().toString());
-            resp.add(map);
-        }
-        return resp;
+        return setManageService.getExamList();
     }
 
-    @Override
-    public List<Map<String, String>> searchStudent(int problemSetId, String username, String name) {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
-            System.out.println("Problem set search student permission denied");
+    @GetMapping("/set_manage/student/search/")
+    public List<Map<String, String>> searchStudent(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
             List<Map<String, String>> resp = new ArrayList<>();
             Map<String, String> map = new HashMap<>();
-            map.put("error_message", "Problem set search student permission denied");
+            map.put("error_message", "Invalid problem set ID");
             resp.add(map);
             return resp;
         }
 
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        if (problemSetList.isEmpty()) {
-            System.out.println("No such problem set");
+        String username = data.get("username");
+        String name = data.get("name");
+
+        return setManageService.searchStudent(problemSetId, username, name);
+    }
+
+    @PostMapping("/set_manage/student/")
+    public Map<String, String> addStudent(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set ID");
+            return resp;
+        }
+
+        int userId;
+        try {
+            userId = Integer.parseInt(data.get("userId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid user ID");
+            return resp;
+        }
+
+        return setManageService.addStudent(problemSetId, userId);
+    }
+
+    @DeleteMapping("/set_manage/student/")
+    public Map<String, String> deleteStudent(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid problem set ID");
+            return resp;
+        }
+
+        int userId;
+        try {
+            userId = Integer.parseInt(data.get("userId"));
+        } catch (NumberFormatException e) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Invalid user ID");
+            return resp;
+        }
+
+        return setManageService.deleteStudent(problemSetId, userId);
+    }
+
+    @GetMapping("/set_manage/student/get_added/")
+    public List<Map<String, String>> getAddedStudent(@RequestParam Map<String, String> data) {
+        int problemSetId;
+        try {
+            problemSetId = Integer.parseInt(data.get("problemSetId"));
+        } catch (NumberFormatException e) {
             List<Map<String, String>> resp = new ArrayList<>();
             Map<String, String> map = new HashMap<>();
-            map.put("error_message", "No such problem set");
+            map.put("error_message", "Invalid problem set ID");
             resp.add(map);
             return resp;
         }
 
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.like("username", username);
-        userQueryWrapper.like("name", name);
-        List<User> studentList = userMapper.selectList(userQueryWrapper);
-        List<Map<String, String>> resp = new ArrayList<>();
-        for (User student : studentList) {
-            QueryWrapper<StudentNPs> checkAddedQueryWrapper = new QueryWrapper<>();
-            checkAddedQueryWrapper.eq("problem_set_id", problemSetId);
-            checkAddedQueryWrapper.eq("student_id", student.getUserId());
-            int addCount = Math.toIntExact(studentNPsMapper.selectCount(checkAddedQueryWrapper));
-            if (addCount != 0) {
-                continue;
-            }
-
-            Map<String, String> map = new HashMap<>();
-            map.put("user_id", student.getUserId().toString());
-            map.put("username", student.getUsername());
-            map.put("name", student.getName());
-            map.put("permission", student.getPermission().toString());
-
-            resp.add(map);
-        }
-        return resp;
+        return setManageService.getAddedStudent(problemSetId);
     }
 
-    @Override
-    public Map<String, String> addStudent(int problemSetId, int userId) {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Problem set add student permission denied");
-            return resp;
-        }
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        if (problemSetList.isEmpty()) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "No such problem set");
-            return resp;
-        }
-
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("user_id", userId);
-        List<User> userList = userMapper.selectList(userQueryWrapper);
-        if (userList.isEmpty()) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "No such user");
-            return resp;
-        }
-
-        ProblemSet problemSet = problemSetList.get(0);
-        if (!Objects.equals(problemSet.getPsAuthorId(), user.getUserId()) && user.getPermission() < 2) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Teacher cannot add student to others' problem set");
-            return resp;
-        }
-
-        User student = userList.get(0);
-        QueryWrapper<StudentNPs> studentNPsQueryWrapper = new QueryWrapper<>();
-        studentNPsQueryWrapper.eq("problem_set_id", problemSetId);
-        studentNPsQueryWrapper.eq("student_id", student.getUserId());
-        int count = Math.toIntExact(studentNPsMapper.selectCount(studentNPsQueryWrapper));
-        if (count != 0) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Student already added to problem set");
-            return resp;
-        }
-
-        StudentNPs studentNPs = new StudentNPs(
-                student.getUserId(),
-                problemSet.getProblemSetId(),
-                null
-        );
-        studentNPsMapper.insert(studentNPs);
-        Map<String, String> resp = new HashMap<>();
-        resp.put("error_message", "success");
-        return resp;
-    }
-
-    @Override
-    public Map<String, String> deleteStudent(int problemSetId, int userId) {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Problem set delete student permission denied");
-            return resp;
-        }
-
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        if (problemSetList.isEmpty()) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "No such problem set");
-            return resp;
-        }
-
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("user_id", userId);
-        List<User> userList = userMapper.selectList(userQueryWrapper);
-        if (userList.isEmpty()) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "No such user");
-            return resp;
-        }
-
-        ProblemSet problemSet = problemSetList.get(0);
-        if (!Objects.equals(problemSet.getPsAuthorId(), user.getUserId()) && user.getPermission() < 2) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Teacher cannot delete student from others' problem set");
-            return resp;
-        }
-
-        User student = userList.get(0);
-        QueryWrapper<StudentNPs> deleteQueryWrapper = new QueryWrapper<>();
-        deleteQueryWrapper.eq("problem_set_id", problemSetId);
-        deleteQueryWrapper.eq("student_id", student.getUserId());
-        int count = Math.toIntExact(studentNPsMapper.selectCount(deleteQueryWrapper));
-        if (count == 0) {
-            Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Student not added to problem set");
-            return resp;
-        }
-
-        studentNPsMapper.delete(deleteQueryWrapper);
-        QueryWrapper<ObjectiveProblemAnswer> objectiveProblemAnswerQueryWrapper = new QueryWrapper<>();
-        objectiveProblemAnswerQueryWrapper.eq("author_id", student.getUserId());
-        objectiveProblemAnswerQueryWrapper.eq("problem_set_id", problemSet.getProblemSetId());
-        objectiveProblemAnswerMapper.delete(objectiveProblemAnswerQueryWrapper);
-
-        QueryWrapper<ProgrammingAnswer> programmingAnswerQueryWrapper = new QueryWrapper<>();
-        programmingAnswerQueryWrapper.eq("author_id", student.getUserId());
-        programmingAnswerQueryWrapper.eq("problem_set_id", problemSet.getProblemSetId());
-        programmingAnswerMapper.delete(programmingAnswerQueryWrapper);
-
-        Map<String, String> resp = new HashMap<>();
-        resp.put("error_message", "success");
-        return resp;
-    }
-
-    @Override
-    public List<Map<String, String>> getAddedStudent(int problemSetId) {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
-        if (user.getPermission() < 1) {
-            System.out.println("Problem set get added student permission denied");
-            List<Map<String, String>> resp = new ArrayList<>();
-            Map<String, String> map = new HashMap<>();
-            map.put("error_message", "Problem set get added student permission denied");
-            resp.add(map);
-            return resp;
-        }
-
-        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
-        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
-        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
-        if (problemSetList.isEmpty()) {
-            System.out.println("No such problem set");
-            List<Map<String, String>> resp = new ArrayList<>();
-            Map<String, String> map = new HashMap<>();
-            map.put("error_message", "No such problem set");
-            resp.add(map);
-            return resp;
-        }
-
-        QueryWrapper<StudentNPs> studentNPsQueryWrapper = new QueryWrapper<>();
-        studentNPsQueryWrapper.eq("problem_set_id", problemSetId);
-        studentNPsQueryWrapper.orderByAsc("student_id");
-        List<StudentNPs> studentNPsList = studentNPsMapper.selectList(studentNPsQueryWrapper);
-
-        List<Map<String, String>> resp = new ArrayList<>();
-        for (StudentNPs studentNPs : studentNPsList) {
-            Map<String, String> map = new HashMap<>();
-
-            Integer userId = studentNPs.getStudentId();
-
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("user_id", userId);
-            User student = userMapper.selectOne(userQueryWrapper);
-
-            map.put("user_id", student.getUserId().toString());
-            map.put("username", student.getUsername());
-            map.put("name", student.getName());
-            map.put("permission", student.getPermission().toString());
-            resp.add(map);
-        }
-        return resp;
-    }
 }
