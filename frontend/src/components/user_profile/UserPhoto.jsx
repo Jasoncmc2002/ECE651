@@ -81,7 +81,7 @@ class UserPhoto extends Component {
                     // console.log(resp);
                     if (resp.error_message === 'success') {
                         this.setState({
-                            error_message: "Image modified successfully",
+                            error_message: "Avatar updated successfully",
                             is_loading: false,
                             photo_change: false,
                         }, () => {
