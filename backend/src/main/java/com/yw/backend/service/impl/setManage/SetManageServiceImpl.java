@@ -28,7 +28,372 @@ public class SetManageServiceImpl implements SetManageService {
     private ObjectiveProblemAnswerMapper objectiveProblemAnswerMapper;
     @Autowired
     private ProgrammingAnswerMapper programmingAnswerMapper;
+    @Autowired
+    private ObjectiveProblemMapper objectiveProblemMapper;
+    @Autowired
+    private OpNPsMapper opNPsMapper;
 
+    @Override
+    public Map<String, String> create(String psName, LocalDateTime psStartTime, LocalDateTime psEndTime, int duration) {
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+
+        // check permission
+        if (user.getPermission() < 1) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "no permission to create problem set");
+            return resp;
+        }
+
+        // check input
+        if (psName == null || psName.length() == 0) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the problem set name cannot be empty");
+            return resp;
+        } else if (psName.length() > 100) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the problem set name cannot exceed 100 characters");
+            return resp;
+        }
+
+        if (psStartTime.isAfter(psEndTime)) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the start time of the problem set cannot be after the end time");
+            return resp;
+        }
+
+        if (duration < 0) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the exam time cannot be a negative number");
+            return resp;
+        } else if (psStartTime.plusMinutes(duration).isAfter(psEndTime)) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "the exam time exceed the duration of the problem set间");
+            return resp;
+        }
+        // calculate id
+        int problemSetMaxId = 0;
+        List<ProblemSet> problemSetList = problemSetMapper.selectList(null);
+        if (!problemSetList.isEmpty())
+            for (ProblemSet problemSet : problemSetList)
+                if (problemSet.getProblemSetId() > problemSetMaxId)
+                    problemSetMaxId = problemSet.getProblemSetId();
+        Integer problemSetId = problemSetMaxId + 1;
+
+        // create instance
+        ProblemSet problemSet = new ProblemSet(
+                problemSetId,
+                psName,
+                user.getUserId(),
+                psStartTime,
+                psEndTime,
+                duration
+        );
+        problemSetMapper.insert(problemSet);
+        // return id
+        Map<String, String> resp = new HashMap<>();
+        resp.put("error_message", "success");
+        resp.put("problem_set_id", problemSetId.toString());
+        return resp;
+    }
+
+    @Override
+    public Map<String, String> delete(int problemSetId) {
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+
+        // check permission
+        if (user.getPermission() < 1) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "no operation permission to delete problem set");
+            return resp;
+        }
+
+        // check if this problem exists
+        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
+        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
+        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
+        if (problemSetList.isEmpty()) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "no problem set found with the given ID");
+            return resp;
+        }
+
+        // check if this problem can be deleted
+        ProblemSet problemSet = problemSetList.get(0);
+        if (!Objects.equals(problemSet.getPsAuthorId(), user.getUserId()) && user.getPermission() < 2) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "teachers cannot delete problem set created by others");
+            return resp;
+        }
+
+        // delete
+        problemSetMapper.delete(problemSetQueryWrapper);
+        Map<String, String> resp = new HashMap<>();
+        resp.put("error_message", "success");
+        return resp;
+    }
+
+    @Override
+    public List<Map<String, String>> searchObjectiveProblem(int problemSetId, String opDescription, String opTag, int opDifficultyMin, int opDifficultyMax) {
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+
+        // check permission
+        if (user.getPermission() < 1) {
+            System.out.println("no permission to query objective problem in problem set");
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "no permission to query objective problem in problem set");
+            resp.add(map);
+            return resp;
+        }
+
+        // check if the problem set exist
+        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
+        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
+        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
+        if (problemSetList.isEmpty()) {
+            System.out.println("no problem set found with the given ID");
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "no problem set found with the given ID");
+            resp.add(map);
+            return resp;
+        }
+
+        // query questions, making sure to remove those that have been added
+        QueryWrapper<ObjectiveProblem> objectiveProblemQueryWrapper = new QueryWrapper<>();
+        objectiveProblemQueryWrapper.like("op_description", opDescription);
+        objectiveProblemQueryWrapper.like("op_tag", opTag);
+        objectiveProblemQueryWrapper.ge("op_difficulty", opDifficultyMin);
+        objectiveProblemQueryWrapper.le("op_difficulty", opDifficultyMax);
+        List<ObjectiveProblem> objectiveProblemList = objectiveProblemMapper.selectList(objectiveProblemQueryWrapper);
+        List<Map<String, String>> resp = new ArrayList<>();
+        for (ObjectiveProblem objectiveProblem : objectiveProblemList) {
+            // check if this problem has been added to this problem set
+            QueryWrapper<OpNPs> checkAddedQueryWrapper = new QueryWrapper<>();
+            checkAddedQueryWrapper.eq("problem_set_id", problemSetId).eq("objective_problem_id", objectiveProblem.getObjectiveProblemId());
+            int addCount = Math.toIntExact(opNPsMapper.selectCount(checkAddedQueryWrapper));
+            if (addCount != 0) {
+                continue;
+            }
+
+            // input the problem information to resp
+            Map<String, String> map = new HashMap<>();
+            map.put("objective_problem_id", objectiveProblem.getObjectiveProblemId().toString());
+            String searchedOpDescription = objectiveProblem.getOpDescription();
+            map.put("op_description", searchedOpDescription.substring(0, Math.min(searchedOpDescription.length(), 60)) + "...");
+            map.put("op_tag", objectiveProblem.getOpTag());
+            map.put("op_difficulty", objectiveProblem.getOpDifficulty().toString());
+
+            QueryWrapper<OpNPs> getUseCountQueryWrapper = new QueryWrapper<>();
+            getUseCountQueryWrapper.eq("objective_problem_id", objectiveProblem.getObjectiveProblemId());
+            int opUseCount = Math.toIntExact(opNPsMapper.selectCount(getUseCountQueryWrapper));
+            map.put("op_use_count", String.valueOf(opUseCount));
+            resp.add(map);
+        }
+        return resp;
+    }
+
+    @Override
+    public Map<String, String> addObjectiveProblem(int problemSetId, int objectiveProblemId) {
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+
+        // check permission
+        if (user.getPermission() < 1) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "No permission to add objective problems to the problem set");
+            return resp;
+        }
+
+        // Check if both IDs exist
+        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
+        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
+        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
+        if (problemSetList.isEmpty()) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "No problem set found with the given ID");
+            return resp;
+        }
+
+        QueryWrapper<ObjectiveProblem> objectiveProblemQueryWrapper = new QueryWrapper<>();
+        objectiveProblemQueryWrapper.eq("objective_problem_id", objectiveProblemId);
+        List<ObjectiveProblem> objectiveProblemList = objectiveProblemMapper.selectList(objectiveProblemQueryWrapper);
+        if (objectiveProblemList.isEmpty()) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "No objective problem found with the given ID");
+            return resp;
+        }
+
+        // Check if this question set can be modified
+        ProblemSet problemSet = problemSetList.get(0);
+        if (!Objects.equals(problemSet.getPsAuthorId(), user.getUserId()) && user.getPermission() < 2) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Teachers are not allowed to add objective problems to problem sets created by others");
+            return resp;
+        }
+
+        // Check if the question has already been added
+        ObjectiveProblem objectiveProblem = objectiveProblemList.get(0);
+        QueryWrapper<OpNPs> opNPsQueryWrapper = new QueryWrapper<>();
+        opNPsQueryWrapper.eq("problem_set_id", problemSet.getProblemSetId());
+        opNPsQueryWrapper.eq("objective_problem_id", objectiveProblem.getObjectiveProblemId());
+        int count = Math.toIntExact(opNPsMapper.selectCount(opNPsQueryWrapper));
+        if (count != 0) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "The objective problem has already been added to the problem set");
+            return resp;
+        }
+
+        // add
+        OpNPs opNPs = new OpNPs(
+                objectiveProblem.getObjectiveProblemId(),
+                problemSet.getProblemSetId()
+        );
+        opNPsMapper.insert(opNPs);
+        Map<String, String> resp = new HashMap<>();
+        resp.put("error_message", "success");
+        return resp;
+    }
+
+    @Override
+    public Map<String, String> deleteObjectiveProblem(int problemSetId, int objectiveProblemId) {
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+
+        // check permission
+        if (user.getPermission() < 1) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "No permission to delete objective problems from the problem set");
+            return resp;
+        }
+
+        // Check if both IDs exist
+        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
+        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
+        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
+        if (problemSetList.isEmpty()) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "No problem set found with the given ID");
+            return resp;
+        }
+
+        QueryWrapper<ObjectiveProblem> objectiveProblemQueryWrapper = new QueryWrapper<>();
+        objectiveProblemQueryWrapper.eq("objective_problem_id", objectiveProblemId);
+        List<ObjectiveProblem> objectiveProblemList = objectiveProblemMapper.selectList(objectiveProblemQueryWrapper);
+        if (objectiveProblemList.isEmpty()) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "No objective problem found with the given ID");
+            return resp;
+        }
+
+        // Check if this problem set can be modified
+        ProblemSet problemSet = problemSetList.get(0);
+        if (!Objects.equals(problemSet.getPsAuthorId(), user.getUserId()) && user.getPermission() < 2) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "Teachers are not allowed to delete objective problems from problem sets created by others");
+            return resp;
+        }
+
+        // Check if the problem has already been deleted
+        ObjectiveProblem objectiveProblem = objectiveProblemList.get(0);
+        QueryWrapper<OpNPs> deleteQueryWrapper = new QueryWrapper<>();
+        deleteQueryWrapper.eq("problem_set_id", problemSet.getProblemSetId());
+        deleteQueryWrapper.eq("objective_problem_id", objectiveProblem.getObjectiveProblemId());
+        int count = Math.toIntExact(opNPsMapper.selectCount(deleteQueryWrapper));
+        if (count == 0) {
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error_message", "The objective problem has been removed from the problem set");
+            return resp;
+        }
+
+        // delete
+        opNPsMapper.delete(deleteQueryWrapper);
+
+        // Delete all answer records related to this problem in this exam
+        QueryWrapper<ObjectiveProblemAnswer> objectiveProblemAnswerQueryWrapper = new QueryWrapper<>();
+        objectiveProblemAnswerQueryWrapper.eq("problem_set_id", problemSet.getProblemSetId());
+        objectiveProblemAnswerQueryWrapper.eq("objective_problem_id", objectiveProblem.getObjectiveProblemId());
+        objectiveProblemAnswerMapper.delete(objectiveProblemAnswerQueryWrapper);
+
+        Map<String, String> resp = new HashMap<>();
+        resp.put("error_message", "success");
+        return resp;
+    }
+
+    @Override
+    public List<Map<String, String>> getAddedObjectiveProblem(int problemSetId) {
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+
+        // check permission
+        if (user.getPermission() < 1) {
+            System.out.println("No permission to query objective problems in the problem set");
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "No permission to query objective problems in the problem set");
+            resp.add(map);
+            return resp;
+        }
+
+        // Check if the problem exists
+        QueryWrapper<ProblemSet> problemSetQueryWrapper = new QueryWrapper<>();
+        problemSetQueryWrapper.eq("problem_set_id", problemSetId);
+        List<ProblemSet> problemSetList = problemSetMapper.selectList(problemSetQueryWrapper);
+        if (problemSetList.isEmpty()) {
+            System.out.println("No problem set found with the given ID");
+            List<Map<String, String>> resp = new ArrayList<>();
+            Map<String, String> map = new HashMap<>();
+            map.put("error_message", "No problem set found with the given ID");
+            resp.add(map);
+            return resp;
+        }
+
+        // Query the objective problems associated with this problem set
+        QueryWrapper<OpNPs> opNPsQueryWrapper = new QueryWrapper<>();
+        opNPsQueryWrapper.eq("problem_set_id", problemSetId);
+        opNPsQueryWrapper.orderByAsc("objective_problem_id");
+        List<OpNPs> opNPsList = opNPsMapper.selectList(opNPsQueryWrapper);
+
+        // Convert the objective problem information into a list and return it
+        List<Map<String, String>> resp = new ArrayList<>();
+        for (OpNPs opNPs : opNPsList) {
+            Map<String, String> map = new HashMap<>();
+
+            Integer objectiveProblemId = opNPs.getObjectiveProblemId();
+
+            QueryWrapper<ObjectiveProblem> objectiveProblemQueryWrapper = new QueryWrapper<>();
+            objectiveProblemQueryWrapper.eq("objective_problem_id", objectiveProblemId);
+            ObjectiveProblem objectiveProblem = objectiveProblemMapper.selectOne(objectiveProblemQueryWrapper);
+
+            map.put("objective_problem_id", objectiveProblem.getObjectiveProblemId().toString());
+            String searchedOpDescription = objectiveProblem.getOpDescription();
+            map.put("op_description", searchedOpDescription.substring(0, Math.min(searchedOpDescription.length(), 60)) + "...");
+            map.put("op_tag", objectiveProblem.getOpTag());
+            map.put("op_difficulty", objectiveProblem.getOpDifficulty().toString());
+
+            QueryWrapper<OpNPs> getUseCountQueryWrapper = new QueryWrapper<>();
+            getUseCountQueryWrapper.eq("objective_problem_id", objectiveProblem.getObjectiveProblemId());
+            int opUseCount = Math.toIntExact(opNPsMapper.selectCount(getUseCountQueryWrapper));
+            map.put("op_use_count", String.valueOf(opUseCount));
+            resp.add(map);
+        }
+        return resp;
+    }
     @Override
     public Map<String, String> update(int problemSetId, String psName, LocalDateTime psStartTime, LocalDateTime psEndTime, int duration) {
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
