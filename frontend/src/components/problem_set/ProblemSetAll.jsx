@@ -103,7 +103,7 @@ class ProblemSetAll extends Component {
                         }
                         const ps_start_time = new Date(problem_set.ps_start_time);
                         const ps_end_time = new Date(problem_set.ps_end_time);
-                        const duration = problem_set.duration === '0' ? "作业不限时" : (problem_set.duration + "分钟");
+                        const duration = problem_set.duration === '0' ? "N/A" : (problem_set.duration + " min");
                         return (
                             <tr key={'ps' + problem_set.problem_set_id}>
                                 <td style={{ overflow: "hidden", textOverflow: "ellipsis", maxWidth: "20vw", minWidth: "20vw", textWrap: "nowrap" }}>
