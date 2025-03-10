@@ -31,6 +31,7 @@ import ProgrammingPreview from './components/problem/ProgrammingPreview';
 import AssignmentManage from './components/set/AssignmentManage';
 import ExamManage from './components/set/ExamManage';
 import SetPreview from './components/set/SetPreview';
+import ProblemSetAll from './components/problem_set/ProblemSetAll';
 
 
 
@@ -110,7 +111,7 @@ class App extends Component {
 
                     {/* My Problem Set */}
                     <Route path='/problem_set/student_view/' element={<ProblemSet />} />
-
+                    <Route path='/problem_set/student_view/all/' element={<ProblemSetAll />} />
 
 
                     {/* Problem Set Management */}
