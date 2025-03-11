@@ -324,7 +324,7 @@ public class SetManageController {
         return setManageService.getAddedProgramming(problemSetId);
     }
 
-    
+
     @GetMapping("/set_manage/assignment/")
     public List<Map<String, String>> getAssignmentList() {
         return setManageService.getAssignmentList();
