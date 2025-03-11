@@ -1,39 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ContendCard from './contents/ContentCard';
 import { Link } from 'react-router-dom';
-import GET_INFO_TIMEOUT from './config/GetInfoTimeoutConfig';
-import BACKEND_ADDRESS_URL from './config/BackendAddressURLConfig';
+import ContendCard from '../contents/ContentCard';
+import GET_INFO_TIMEOUT from '../config/GetInfoTimeoutConfig';
+import BACKEND_ADDRESS_URL from '../config/BackendAddressURLConfig';
 import $ from 'jquery';
-import PAGE_ITEM_LIMIT from './config/PageItemLimit';
+import PAGE_ITEM_LIMIT from '../config/PageItemLimit';
 
-class ProblemSet extends Component {
+class ProblemSetAll extends Component {
     state = {
-        active_problem_set_list: [
+        all_problem_set_list: [
             // { problem_set_id: '1', ps_name: '考试1', ps_start_time: '2024-03-29T22:18', ps_end_time: '2024-03-29T22:18', duration: '60', ps_author_name: 'yw' },
             // { problem_set_id: '2', ps_name: '作业1', ps_start_time: '2024-03-29T22:18', ps_end_time: '2024-03-29T22:18', duration: '0', ps_author_name: 'yw' },
         ],
 
-        page_number: 0, // 从0开始
+        page_number: 0,  // 从0开始
 
         is_loading: false
     }
 
     componentDidMount = () => {
         if (this.props.is_login) {
-            this.handleGetActiveProblemSet();
+            this.handleGetAllProblemSet();
         } else {
-            setTimeout(this.handleGetActiveProblemSet, GET_INFO_TIMEOUT);
+            setTimeout(this.handleGetAllProblemSet, GET_INFO_TIMEOUT);
         }
     }
 
-    handleGetActiveProblemSet = () => {
-        // console.log("get active problem set");
+    handleGetAllProblemSet = () => {
+        // console.log("get all problem set");
         const token = this.props.token;
         // console.log(token);
         this.setState({ is_loading: true });
         $.ajax({
-            url: BACKEND_ADDRESS_URL + "/problem_set/active/",
+            url: BACKEND_ADDRESS_URL + "/problem_set/all/",
             type: "GET",
             headers: {
                 Authorization: "Bearer " + token
@@ -41,7 +41,7 @@ class ProblemSet extends Component {
             success: (resp) => {
                 // console.log(resp);
                 this.setState({
-                    active_problem_set_list: resp,
+                    all_problem_set_list: resp,
                     is_loading: false
                 });
                 if (resp.error_message) {
@@ -76,10 +76,10 @@ class ProblemSet extends Component {
     }
 
     renderTable = () => {
-        const active_problem_set_list_display = [];
-        for (let i = this.state.page_number * PAGE_ITEM_LIMIT; i < this.state.active_problem_set_list.length && i < (this.state.page_number + 1) * PAGE_ITEM_LIMIT; i++) {
-            const problem_set = this.state.active_problem_set_list[i];
-            active_problem_set_list_display.push({
+        const all_problem_set_list_display = [];
+        for (let i = this.state.page_number * PAGE_ITEM_LIMIT; i < this.state.all_problem_set_list.length && i < (this.state.page_number + 1) * PAGE_ITEM_LIMIT; i++) {
+            const problem_set = this.state.all_problem_set_list[i];
+            all_problem_set_list_display.push({
                 ...problem_set
             });
         }
@@ -97,7 +97,7 @@ class ProblemSet extends Component {
                 </thead>
                 <tbody>
                     {this.handleLoadingTrRender()}
-                    {active_problem_set_list_display.map((problem_set) => {
+                    {all_problem_set_list_display.map((problem_set) => {
                         if (!problem_set.problem_set_id) {
                             return;
                         }
@@ -148,7 +148,7 @@ class ProblemSet extends Component {
 
     renderNextButton = () => {
         const page_number = this.state.page_number;
-        const total_page_count = Math.ceil(this.state.active_problem_set_list.length / PAGE_ITEM_LIMIT);
+        const total_page_count = Math.ceil(this.state.all_problem_set_list.length / PAGE_ITEM_LIMIT);
         // console.log(page_number, total_page_count);
         if (page_number >= total_page_count - 1) {
             return (
@@ -172,7 +172,7 @@ class ProblemSet extends Component {
     }
 
     renderPageButtons = () => {
-        const total_page_count = this.state.active_problem_set_list.length === 0 ? 1 : Math.ceil(this.state.active_problem_set_list.length / PAGE_ITEM_LIMIT);
+        const total_page_count = this.state.all_problem_set_list.length === 0 ? 1 : Math.ceil(this.state.all_problem_set_list.length / PAGE_ITEM_LIMIT);
         const page_number = this.state.page_number;
         const page_array = Array.from(Array(total_page_count), (_, x) => x);
         // console.log(page_array);
@@ -207,17 +207,17 @@ class ProblemSet extends Component {
         );
     }
 
-    handleActiveProblemSetListRender = () => {
+    handleAllProblemSetListRender = () => {
         return (
             <div className="container">
                 <ContendCard>
                     {/* nav tabs */}
                     <ul className="nav nav-tabs justify-content-center">
                         <li className="nav-item">
-                            <Link className="nav-link active" to="/problem_set/student_view/">Active Problem Sets</Link>
+                            <Link className="nav-link" to="/problem_set/student_view/">Active Problem Sets</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/problem_set/student_view/all/">All Problem Sets</Link>
+                            <Link className="nav-link active" to="/problem_set/student_view/all/" >All Problem Sets</Link>
                         </li>
                     </ul>
 
@@ -250,7 +250,7 @@ class ProblemSet extends Component {
         if (this.props.is_login) {
             return (
                 <React.Fragment>
-                    {this.handleActiveProblemSetListRender()}
+                    {this.handleAllProblemSetListRender()}
                 </React.Fragment>
             );
         } else {
@@ -261,7 +261,7 @@ class ProblemSet extends Component {
                             <ContendCard>
                                 <div className="row justify-content-md-center">
                                     <h1 className="text-center">
-                                        View Active Problem Sets
+                                        View All Problem Sets
                                     </h1>
                                     <hr />
                                     <h4 className="text-center">Please <Link className='btn btn-link px-0' to="/login/" style={{ textDecoration: "none" }}><h4 className='mb-1'>sign in</h4></Link> to access</h4>
@@ -295,4 +295,4 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-export default connect(mapStateToProps, null)(ProblemSet);
+export default connect(mapStateToProps, null)(ProblemSetAll);
