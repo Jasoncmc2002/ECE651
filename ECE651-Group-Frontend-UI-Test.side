@@ -3143,6 +3143,147 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "abe71250-346e-419c-b186-61f566f43120",
+    "name": "Problem Set Student Answer Sheet",
+    "commands": [{
+      "id": "8942cfb7-bcc3-4b78-b822-a9193bc757cf",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "80dd1756-3458-4119-95db-61e2350518d1",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1600x825",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a0817fe0-b1b6-430f-ae21-6965a3be846a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign In",
+      "targets": [
+        ["linkText=Sign In", "linkText"],
+        ["css=.col:nth-child(1) > .text-center > .icon-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign In')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/div/div[2]/div/div/h4/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/')]", "xpath:href"],
+        ["xpath=//h4/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "735bad18-14a8-4259-b25d-6d17fccb83f9",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "01"
+    }, {
+      "id": "1053efbe-8b9b-4c0e-a860-df5a95a996e5",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "pyw"
+    }, {
+      "id": "1bc98e4d-54f6-4b16-9b74-3a978f9b72c3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-check-label",
+      "targets": [
+        ["css=.form-check-label", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[3]/label", "xpath:idRelative"],
+        ["xpath=//div[3]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Keep me logged in')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0dc62cc5-52f6-4260-94a4-bf038955830e",
+      "comment": "",
+      "command": "click",
+      "target": "css=form",
+      "targets": [
+        ["css=form", "css:finder"],
+        ["xpath=//form[@action='https://app3117.acapp.acwing.com.cn/settings/calculator/login/']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form", "xpath:idRelative"],
+        ["xpath=//form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "68368a30-7ba2-4deb-abe9-b6d019d42cf2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "be42784c-5127-40fa-9fb9-f1baf313143d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.row:nth-child(1) > .col:nth-child(1) > .text-center > .icon-link",
+      "targets": [
+        ["css=.row:nth-child(1) > .col:nth-child(1) > .text-center > .icon-link", "css:finder"],
+        ["xpath=(//a[contains(text(),'My Problem Set')])[2]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/div/div[2]/div/div/h4/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/problem_set/student_view/')])[2]", "xpath:href"],
+        ["xpath=//h4/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3723263c-4ede-4730-99af-782524f1d2fb",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=All Problem Sets",
+      "targets": [
+        ["linkText=All Problem Sets", "linkText"],
+        ["css=.nav > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'All Problem Sets')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/student_view/all/')]", "xpath:href"],
+        ["xpath=//div/div/div/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'All Problem Sets')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "50a375fb-68bc-4799-aa9f-09bd3e9562a7",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=ASSI 3",
+      "targets": [
+        ["linkText=ASSI 3", "linkText"],
+        ["css=tr:nth-child(1) .link-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'ASSI 3')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/student_view/one/11/')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'ASSI 3')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "762434ec-663d-45dc-8679-8d5bd90b356e",
