@@ -34,6 +34,8 @@ public class ProblemSetServiceImpl implements ProblemSetService {
     private TestCaseMapper testCaseMapper;
     @Autowired
     private ObjectiveProblemAnswerMapper objectiveProblemAnswerMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Map<String, String> getOneProgramming(int problemSetId, int programmingId) {
@@ -961,8 +963,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
                 return resp;
             }
         }
-    @Autowired
-    private UserMapper userMapper;
+
     }
 
     @Override

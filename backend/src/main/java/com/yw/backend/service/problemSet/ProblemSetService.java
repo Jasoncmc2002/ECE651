@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProblemSetService {
+    List<Map<String, String>> getAllProblemSet();
+    Map<String, String> getOne(int problemSetId);
+    Map<String, String> startProblemSet(int problemSetId);
     List<Map<String, String>> getActiveProblemSet();
     Map<String, String> getOneProgramming(int problemSetId, int programmingId);
 
@@ -17,6 +20,3 @@ public interface ProblemSetService {
     Map<String, String> submitObjectiveProblemAnswer(int problemSetId, int objectiveProblemId, String opaActualAnswer);
     Map<String, String> submitSpecialJudge(int problemSetId, int programmingId, String paCode, String testInput);
 }
-    List<Map<String, String>> getAllProblemSet();
-    Map<String, String> getOne(int problemSetId);
-    Map<String, String> startProblemSet(int problemSetId);

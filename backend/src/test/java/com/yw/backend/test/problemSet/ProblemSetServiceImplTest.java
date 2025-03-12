@@ -5,6 +5,7 @@ import com.yw.backend.pojo.*;
 import com.yw.backend.service.impl.judge.Sandbox;
 import com.yw.backend.service.impl.problemSet.ProblemSetServiceImpl;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
+import com.yw.backend.service.problemSet.ProblemSetService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -48,6 +48,7 @@ public class ProblemSetServiceImplTest {
 
     @InjectMocks
     private ProblemSetServiceImpl problemSetServiceImpl;
+
 
     // We'll mock the Sandbox to avoid actually running code in real environment
     @Spy
@@ -1210,23 +1211,6 @@ public class ProblemSetServiceImplTest {
                 problemSetServiceImpl.submitSpecialJudge(1, 10, "my code", "my input");
         assertEquals("success", result.get("error_message"));
     }
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        User mockUser = new User();
-        mockUser.setUserId(1);
-        UserDetailsImpl userDetails = new UserDetailsImpl(mockUser);
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(userDetails, null, new ArrayList<>());
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authToken);
-        SecurityContextHolder.setContext(securityContext);
-    }
-
-    @AfterEach
-    void tearDown() {
-        SecurityContextHolder.clearContext();
-    }
 
     @Test
     void testGetActiveProblemSet_Success() {
@@ -1248,7 +1232,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        List<Map<String, String>> result = problemSetService.getActiveProblemSet();
+        List<Map<String, String>> result = problemSetServiceImpl.getActiveProblemSet();
         assertEquals(1, result.size());
         assertEquals("Test Set", result.get(0).get("ps_name"));
     }
@@ -1273,7 +1257,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        List<Map<String, String>> result = problemSetService.getActiveProblemSet();
+        List<Map<String, String>> result = problemSetServiceImpl.getActiveProblemSet();
 
         assertTrue(result.isEmpty());
     }
@@ -1300,7 +1284,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        List<Map<String, String>> result = problemSetService.getAllProblemSet();
+        List<Map<String, String>> result = problemSetServiceImpl.getAllProblemSet();
 
         // 断言结果是否正确
         assertEquals(1, result.size());
@@ -1313,7 +1297,7 @@ public class ProblemSetServiceImplTest {
     void testGetOne_NotFound() {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.emptyList());
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
         assertEquals("No such problem set found through ID query", result.get("error_message"));
     }
 
@@ -1322,7 +1306,7 @@ public class ProblemSetServiceImplTest {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(new ProblemSet()));
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.emptyList());
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
         assertEquals("The user does not belong to this problem set", result.get("error_message"));
     }
 
@@ -1333,7 +1317,7 @@ public class ProblemSetServiceImplTest {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(new StudentNPs()));
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
         assertEquals("The problem set has not started yet", result.get("error_message"));
     }
 
@@ -1349,7 +1333,7 @@ public class ProblemSetServiceImplTest {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(studentNPs));
 
-        Map<String, String> result = problemSetService.startProblemSet(1);
+        Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
         assertEquals("success", result.get("error_message"));
     }
 
@@ -1366,7 +1350,7 @@ public class ProblemSetServiceImplTest {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(studentNPs)); // 关键点
 
-        Map<String, String> result = problemSetService.startProblemSet(1);
+        Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
         assertEquals("The problem set has not started yet", result.get("error_message"));
     }
 
@@ -1385,7 +1369,7 @@ public class ProblemSetServiceImplTest {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(studentNPs));
 
-        Map<String, String> result = problemSetService.startProblemSet(1);
+        Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
         assertEquals("The answer to the problem set has started", result.get("error_message"));
     }
 
@@ -1411,7 +1395,7 @@ public class ProblemSetServiceImplTest {
         author.setName("");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertNotNull(result.get("ps_author_name"));
         assertEquals("", result.get("ps_author_name"));
@@ -1423,7 +1407,7 @@ public class ProblemSetServiceImplTest {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(new ProblemSet()));
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.emptyList()); // 空列表
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
         assertEquals("The user does not belong to this problem set", result.get("error_message"));
     }
 
@@ -1450,7 +1434,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertNotNull(result.get("ps_status"));
         assertEquals("started", result.get("ps_status"));
@@ -1486,7 +1470,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertNotNull(result.get("ps_total_score"));
         assertEquals("20", result.get("ps_total_score"));
@@ -1522,7 +1506,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertNotNull(result.get("ps_total_score"));
         assertEquals("30", result.get("ps_total_score"));
@@ -1567,7 +1551,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertNotNull(result.get("ps_status"));
         assertEquals("closed", result.get("ps_status")); //  `ps_status == "closed"`
@@ -1579,7 +1563,7 @@ public class ProblemSetServiceImplTest {
     void testStartProblemSet_NotFound() {
         when(problemSetMapper.selectList(any())).thenReturn(Collections.emptyList());
 
-        Map<String, String> result = problemSetService.startProblemSet(1);
+        Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
 
         assertEquals("No such problem set found through ID query", result.get("error_message"));
     }
@@ -1592,7 +1576,7 @@ public class ProblemSetServiceImplTest {
 
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.emptyList());
 
-        Map<String, String> result = problemSetService.startProblemSet(1);
+        Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
 
         assertEquals("The user does not belong to this problem set", result.get("error_message"));
     }
@@ -1611,7 +1595,7 @@ public class ProblemSetServiceImplTest {
         StudentNPs studentNPs = new StudentNPs();
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(studentNPs));
 
-        Map<String, String> result = problemSetService.startProblemSet(1);
+        Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
 
 
     }
@@ -1629,7 +1613,7 @@ public class ProblemSetServiceImplTest {
         studentNPs.setProblemSetId(1);
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(studentNPs));
 
-        List<Map<String, String>> result = problemSetService.getAllProblemSet();
+        List<Map<String, String>> result = problemSetServiceImpl.getAllProblemSet();
 
         assertTrue(result.isEmpty());
     }
@@ -1667,7 +1651,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertNotNull(result.get("ps_actual_score"));
         assertEquals("50", result.get("ps_actual_score")); // 20 + 30 = 50
@@ -1700,7 +1684,7 @@ public class ProblemSetServiceImplTest {
         author.setName("Test Author");
         when(userMapper.selectOne(any())).thenReturn(author);
 
-        Map<String, String> result = problemSetService.getOne(1);
+        Map<String, String> result = problemSetServiceImpl.getOne(1);
 
         assertEquals("ended", result.get("ps_status"));
     }
