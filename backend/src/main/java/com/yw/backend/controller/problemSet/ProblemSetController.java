@@ -30,7 +30,7 @@ public class ProblemSetController {
             problemSetId = Integer.parseInt(data.get("problemSetId"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效题目集ID");
+            resp.put("error_message", "Invalid problem set ID");
             return resp;
         }
         return problemSetService.getOne(problemSetId);
@@ -43,7 +43,7 @@ public class ProblemSetController {
             problemSetId = Integer.parseInt(data.get("problemSetId"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "无效题目集ID");
+            resp.put("error_message", "Invalid problem set ID");
             return resp;
         }
         return problemSetService.startProblemSet(problemSetId);
@@ -85,7 +85,7 @@ public class ProblemSetController {
             problemSetId = Integer.parseInt(data.get("problemSetId"));
         } catch (NumberFormatException e) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "IPnvalid problem set ID");
+            resp.put("error_message", "Invalid problem set ID");
             return resp;
         }
 
