@@ -1,16 +1,16 @@
 package com.yw.backend.test.problemSet;
 
-import com.yw.backend.service.impl.problemSet.ProblemSetTeacherServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yw.backend.mapper.*;
 import com.yw.backend.pojo.*;
+import com.yw.backend.service.impl.problemSet.ProblemSetTeacherServiceImpl;
 import com.yw.backend.service.impl.utils.UserDetailsImpl;
-import org.junit.jupiter.api.AfterEach;
+import com.yw.backend.service.problemSet.ProblemSetTeacherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -19,8 +19,8 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class ProblemSetTeacherServiceTest {
+@ExtendWith(MockitoExtension.class)
+class ProblemSetTeacherServiceImplTest {
 
     @Mock
     private UserMapper userMapper;
@@ -47,140 +47,595 @@ public class ProblemSetTeacherServiceTest {
     private ProblemSetTeacherServiceImpl problemSetTeacherService;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        User user = new User();
-        user.setUserId(1);
-        user.setPermission(2);
-        UserDetailsImpl userDetails = new UserDetailsImpl(user);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-    }
-    @AfterEach
-    public void tearDown() {
+    void setUp() {
         SecurityContextHolder.clearContext();
     }
 
+    private void mockLoginUser(int userId, int permission) {
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+        mockUser.setPermission(permission);
+        UserDetailsImpl userDetails = new UserDetailsImpl(mockUser);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, null, null);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
     @Test
-    public void testGetOneStudentAllProgramming() {
-        // Mock data
-        ProblemSet problemSet = new ProblemSet();
-        problemSet.setProblemSetId(1);
-        problemSet.setPsAuthorId(1);
-
-        User student = new User();
-        student.setUserId(2);
-
-        PNPs pnPs = new PNPs();
-        pnPs.setProgrammingId(1);
-
-        Programming programming = new Programming();
-        programming.setProgrammingId(1);
-        programming.setPTitle("Programming 1");
-        programming.setPTotalScore(25);
-
-        ProgrammingAnswer programmingAnswer = new ProgrammingAnswer();
-        programmingAnswer.setProgrammingId(1);
-        programmingAnswer.setPaActualScore(20);
-
-        when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
-        when(userMapper.selectList(any())).thenReturn(Collections.singletonList(student));
-        when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(new StudentNPs()));
-        when(pnPsMapper.selectList(any())).thenReturn(Collections.singletonList(pnPs));
-        when(programmingMapper.selectOne(any())).thenReturn(programming);
-        when(programmingAnswerMapper.selectList(any())).thenReturn(Collections.singletonList(programmingAnswer));
-
-        Map<String, String> data = new HashMap<>();
-        data.put("problemSetId", "1");
-        data.put("studentId", "2");
-
-        List<Map<String, String>> result = problemSetTeacherService.getOneStudentAllProgramming(1, 2);
-
+    void testGetOneStudentAllProgramming_noPermission() {
+        mockLoginUser(100, 0);
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(1, 1);
         assertEquals(1, result.size());
-        assertEquals("Programming 1", result.get(0).get("p_title"));
-        assertEquals("20", result.get(0).get("pa_actual_score"));
+        assertEquals("No permission to get one student all programming",
+                result.get(0).get("error_message"));
     }
 
     @Test
-    public void testGetOneStudentOneObjectiveProblem() {
-        // Mock data
-        ProblemSet problemSet = new ProblemSet();
-        problemSet.setProblemSetId(1);
-        problemSet.setPsAuthorId(1);
-
-        User student = new User();
-        student.setUserId(2);
-
-        ObjectiveProblem objectiveProblem = new ObjectiveProblem();
-        objectiveProblem.setObjectiveProblemId(1);
-        objectiveProblem.setOpDescription("Description");
-        objectiveProblem.setOpTotalScore(10);
-        objectiveProblem.setOpCorrectAnswer("Answer");
-
-        ObjectiveProblemAnswer objectiveProblemAnswer = new ObjectiveProblemAnswer();
-        objectiveProblemAnswer.setOpaActualAnswer("Student Answer");
-        objectiveProblemAnswer.setOpaActualScore(8);
-
-        when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
-        when(userMapper.selectList(any())).thenReturn(Collections.singletonList(student));
-        when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(new StudentNPs()));
-        when(objectiveProblemMapper.selectList(any())).thenReturn(Collections.singletonList(objectiveProblem));
-        when(opNPsMapper.selectList(any())).thenReturn(Collections.singletonList(new OpNPs()));
-        when(objectiveProblemAnswerMapper.selectList(any())).thenReturn(Collections.singletonList(objectiveProblemAnswer));
-
-        Map<String, String> data = new HashMap<>();
-        data.put("problemSetId", "1");
-        data.put("studentId", "2");
-        data.put("objectiveProblemId", "1");
-
-        Map<String, String> result = problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 1);
-
-        assertEquals("success", result.get("error_message"));
-        assertEquals("Description", result.get("op_description"));
-        assertEquals("8", result.get("opa_actual_score"));
+    void testGetOneStudentAllProgramming_problemSetNotExist() {
+        mockLoginUser(100, 1);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(999, 1);
+        assertEquals(1, result.size());
+        assertEquals("No such problem set", result.get(0).get("error_message"));
     }
 
     @Test
-    public void testGetOneStudentOneProgramming() {
-        // Mock data
-        ProblemSet problemSet = new ProblemSet();
-        problemSet.setProblemSetId(1);
-        problemSet.setPsAuthorId(1);
+    void testGetOneStudentAllProgramming_noPermissionNotAuthor() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(200);
+        List<ProblemSet> psList = new ArrayList<>();
+        psList.add(ps);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(psList);
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(1, 1);
+        assertEquals(1, result.size());
+        assertEquals("No permission to get one student all programming",
+                result.get(0).get("error_message"));
+    }
 
+    @Test
+    void testGetOneStudentAllProgramming_studentNotExist() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(200);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(1, 999);
+        assertEquals(1, result.size());
+        assertEquals("No such student", result.get(0).get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentAllProgramming_studentNotInPs() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(999);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(1, 999);
+        assertEquals(1, result.size());
+        assertEquals("Student not in this problem set", result.get(0).get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentAllProgramming_noProgrammingAnswer() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(999);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(999);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        PNPs pnp = new PNPs();
+        pnp.setProblemSetId(1);
+        pnp.setProgrammingId(10);
+        when(pnPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pnp));
+        Programming pg = new Programming();
+        pg.setProgrammingId(10);
+        pg.setPTitle("Test Programming");
+        pg.setPTotalScore(50);
+        when(programmingMapper.selectOne(any(QueryWrapper.class)))
+                .thenReturn(pg);
+        when(programmingAnswerMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(1, 999);
+        assertEquals(1, result.size());
+        Map<String, String> one = result.get(0);
+        assertEquals("10", one.get("programming_id"));
+        assertEquals("Test Programming", one.get("p_title"));
+        assertEquals("50", one.get("p_total_score"));
+        assertEquals("Unanswered", one.get("pa_status"));
+        assertEquals("0", one.get("pa_actual_score"));
+    }
+
+    @Test
+    void testGetOneStudentAllProgramming_withProgrammingAnswer() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(999);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(999);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        PNPs pnp = new PNPs();
+        pnp.setProblemSetId(1);
+        pnp.setProgrammingId(10);
+        when(pnPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pnp));
+        Programming pg = new Programming();
+        pg.setProgrammingId(10);
+        pg.setPTitle("Test Programming");
+        pg.setPTotalScore(50);
+        when(programmingMapper.selectOne(any(QueryWrapper.class)))
+                .thenReturn(pg);
+        ProgrammingAnswer pa = new ProgrammingAnswer();
+        pa.setPaActualScore(40);
+        when(programmingAnswerMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pa));
+        List<Map<String, String>> result =
+                problemSetTeacherService.getOneStudentAllProgramming(1, 999);
+        assertEquals(1, result.size());
+        Map<String, String> one = result.get(0);
+        assertEquals("Answered", one.get("pa_status"));
+        assertEquals("40", one.get("pa_actual_score"));
+    }
+
+    @Test
+    void testGetOneStudentOneObjectiveProblem_noPermission() {
+        mockLoginUser(100, 0);
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 3);
+        assertEquals("No permission to get one student one objective problem",
+                resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneObjectiveProblem_problemSetNotExist() {
+        mockLoginUser(100, 1);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 3);
+        assertEquals("No such problem set", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneObjectiveProblem_notAuthorNoPermission() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(999);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 3);
+        assertTrue(resp.get("error_message").contains("Teacher cannot get one student"));
+    }
+
+    @Test
+    void testGetOneStudentOneObjectiveProblem_studentNotExist() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(999);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 3);
+        assertEquals("No such student", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneObjectiveProblem_studentNotInProblemSet() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(999);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
         User student = new User();
         student.setUserId(2);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 3);
+        assertEquals("Student not in this problem set", resp.get("error_message"));
+    }
 
-        Programming programming = new Programming();
-        programming.setProgrammingId(1);
-        programming.setPTitle("Programming 1");
-        programming.setPDescription("Description");
-        programming.setPTotalScore(25);
-        programming.setTimeLimit(100);
-        programming.setCodeSizeLimit(1000);
+    @Test
+    void testGetOneStudentOneObjectiveProblem_objectiveProblemNotExist() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        when(objectiveProblemMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 10);
+        assertEquals("No such objective problem", resp.get("error_message"));
+    }
 
-        ProgrammingAnswer programmingAnswer = new ProgrammingAnswer();
-        programmingAnswer.setPaCode("Code");
-        programmingAnswer.setPaActualScore(20);
-        programmingAnswer.setPassCount(5);
+    @Test
+    void testGetOneStudentOneObjectiveProblem_problemNotInPs() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        ObjectiveProblem op = new ObjectiveProblem();
+        op.setObjectiveProblemId(10);
+        op.setOpDescription("Test");
+        op.setOpTotalScore(10);
+        op.setOpCorrectAnswer("B");
+        when(objectiveProblemMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(op));
+        when(opNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 10);
+        assertEquals("Objective problem not in this problem set", resp.get("error_message"));
+    }
 
-        when(problemSetMapper.selectList(any())).thenReturn(Collections.singletonList(problemSet));
-        when(userMapper.selectList(any())).thenReturn(Collections.singletonList(student));
-        when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(new StudentNPs()));
-        when(programmingMapper.selectList(any())).thenReturn(Collections.singletonList(programming));
-        when(pnPsMapper.selectList(any())).thenReturn(Collections.singletonList(new PNPs()));
-        when(programmingAnswerMapper.selectList(any())).thenReturn(Collections.singletonList(programmingAnswer));
-        when(testCaseMapper.selectCount(any())).thenReturn(10L);
+    @Test
+    void testGetOneStudentOneObjectiveProblem_noAnswer() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        student.setName("Alice");
+        student.setUsername("alice123");
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        ObjectiveProblem op = new ObjectiveProblem();
+        op.setObjectiveProblemId(10);
+        op.setOpDescription("Test OP");
+        op.setOpTotalScore(10);
+        op.setOpCorrectAnswer("C");
+        when(objectiveProblemMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(op));
+        when(opNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(new OpNPs()));
+        when(objectiveProblemAnswerMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 10);
+        assertEquals("success", resp.get("error_message"));
+        assertEquals("10", resp.get("objective_problem_id"));
+        assertEquals("Test OP", resp.get("op_description"));
+        assertEquals("10", resp.get("op_total_score"));
+        assertEquals("C", resp.get("op_correct_answer"));
+        assertEquals("2", resp.get("student_id"));
+        assertEquals("Alice", resp.get("student_name"));
+        assertEquals("alice123", resp.get("student_username"));
+        assertEquals("", resp.get("opa_actual_answer"));
+        assertEquals("0", resp.get("opa_actual_score"));
+    }
 
-        Map<String, String> data = new HashMap<>();
-        data.put("problemSetId", "1");
-        data.put("studentId", "2");
-        data.put("programmingId", "1");
+    @Test
+    void testGetOneStudentOneObjectiveProblem_withAnswer() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        student.setName("Bob");
+        student.setUsername("bob123");
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        ObjectiveProblem op = new ObjectiveProblem();
+        op.setObjectiveProblemId(10);
+        op.setOpDescription("Test OP");
+        op.setOpTotalScore(10);
+        op.setOpCorrectAnswer("A");
+        when(objectiveProblemMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(op));
+        when(opNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(new OpNPs()));
+        ObjectiveProblemAnswer opa = new ObjectiveProblemAnswer();
+        opa.setOpaActualAnswer("B");
+        opa.setOpaActualScore(6);
+        when(objectiveProblemAnswerMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(opa));
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneObjectiveProblem(1, 2, 10);
+        assertEquals("success", resp.get("error_message"));
+        assertEquals("B", resp.get("opa_actual_answer"));
+        assertEquals("6", resp.get("opa_actual_score"));
+    }
 
-        Map<String, String> result = problemSetTeacherService.getOneStudentOneProgramming(1, 2, 1);
+    @Test
+    void testGetOneStudentOneProgramming_noPermission() {
+        mockLoginUser(100, 0);
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 3);
+        assertEquals("No permission to get one student one objective problem",
+                resp.get("error_message"));
+    }
 
-        assertEquals("success", result.get("error_message"));
-        assertEquals("Programming 1", result.get("p_title"));
-        assertEquals("20", result.get("pa_actual_score"));
-        assertEquals("5", result.get("pass_count"));
+    @Test
+    void testGetOneStudentOneProgramming_problemSetNotExist() {
+        mockLoginUser(100, 1);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 3);
+        assertEquals("No such problem set", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_notAuthorNoPermission() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(999);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 3);
+        assertTrue(resp.get("error_message").contains("Teacher cannot get one student"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_studentNotExist() {
+        mockLoginUser(100, 2);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(999);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 3);
+        assertEquals("No such student", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_studentNotInPs() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 10);
+        assertEquals("Student not in this problem set", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_noSuchProgramming() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        when(programmingMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 1000);
+        assertEquals("No such programming", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_notInProblemSet() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        Programming pg = new Programming();
+        pg.setProgrammingId(10);
+        pg.setPTitle("Programming test");
+        pg.setPTotalScore(100);
+        when(programmingMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pg));
+        when(pnPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 10);
+        assertEquals("Programming not in this problem set", resp.get("error_message"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_noAnswer() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        student.setName("Tom");
+        student.setUsername("tomcat");
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        Programming pg = new Programming();
+        pg.setProgrammingId(10);
+        pg.setPTitle("Programming test");
+        pg.setPDescription("Description here...");
+        pg.setPTotalScore(100);
+        pg.setTimeLimit(2);
+        pg.setCodeSizeLimit(65536);
+        when(programmingMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pg));
+        PNPs pnp = new PNPs();
+        pnp.setProblemSetId(1);
+        pnp.setProgrammingId(10);
+        when(pnPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pnp));
+        when(testCaseMapper.selectCount(any(QueryWrapper.class))).thenReturn(5L);
+        when(programmingAnswerMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.emptyList());
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 10);
+        assertEquals("success", resp.get("error_message"));
+        assertEquals("Programming test", resp.get("p_title"));
+        assertEquals("Description here...", resp.get("p_description"));
+        assertEquals("100", resp.get("p_total_score"));
+        assertEquals("2", resp.get("time_limit"));
+        assertEquals("65536", resp.get("code_size_limit"));
+        assertEquals("5", resp.get("tc_count"));
+        assertEquals("", resp.get("pa_code"));
+        assertEquals("0", resp.get("pa_actual_score"));
+        assertEquals("0", resp.get("pass_count"));
+    }
+
+    @Test
+    void testGetOneStudentOneProgramming_withAnswer() {
+        mockLoginUser(100, 1);
+        ProblemSet ps = new ProblemSet();
+        ps.setProblemSetId(1);
+        ps.setPsAuthorId(100);
+        when(problemSetMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(ps));
+        User student = new User();
+        student.setUserId(2);
+        student.setName("Tom");
+        student.setUsername("tomcat");
+        when(userMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(student));
+        StudentNPs snps = new StudentNPs();
+        snps.setStudentId(2);
+        snps.setProblemSetId(1);
+        when(studentNPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(snps));
+        Programming pg = new Programming();
+        pg.setProgrammingId(10);
+        pg.setPTitle("Programming test");
+        pg.setPDescription("Description here...");
+        pg.setPTotalScore(100);
+        pg.setTimeLimit(2);
+        pg.setCodeSizeLimit(65536);
+        when(programmingMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pg));
+        PNPs pnp = new PNPs();
+        pnp.setProblemSetId(1);
+        pnp.setProgrammingId(10);
+        when(pnPsMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pnp));
+        when(testCaseMapper.selectCount(any(QueryWrapper.class))).thenReturn(5L);
+        ProgrammingAnswer pa = new ProgrammingAnswer();
+        pa.setPaCode("print('Hello')");
+        pa.setPaActualScore(80);
+        pa.setPassCount(3);
+        when(programmingAnswerMapper.selectList(any(QueryWrapper.class)))
+                .thenReturn(Collections.singletonList(pa));
+        Map<String, String> resp =
+                problemSetTeacherService.getOneStudentOneProgramming(1, 2, 10);
+        assertEquals("success", resp.get("error_message"));
+        assertEquals("print('Hello')", resp.get("pa_code"));
+        assertEquals("80", resp.get("pa_actual_score"));
+        assertEquals("3", resp.get("pass_count"));
     }
 }
