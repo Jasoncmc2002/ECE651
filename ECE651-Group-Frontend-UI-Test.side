@@ -2,7 +2,7 @@
   "id": "629b1176-d488-4186-9e7a-e94eb59192eb",
   "version": "2.0",
   "name": "ECE651-Group-Frontend-UI-Test",
-  "url": "http://localhost:3000",
+  "url": "http://localhost:3000/problem_set/student_view/one/11/",
   "tests": [{
     "id": "46ee7373-cea1-4211-a6fa-61fea3ada6ea",
     "name": "Sign In",
@@ -3284,6 +3284,178 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "2dcbe325-c228-4af4-84b8-2a48674a41f6",
+    "name": "Problem Set Student Problem Pages",
+    "commands": [{
+      "id": "9bad922a-af34-412f-9c91-2ef11f6542f3",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/problem_set/student_view/one/11/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "affa701f-bcd1-44da-9778-1d3032a0c02e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1600x825",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "87eeb731-b7db-4ce3-8230-5c1a5d2f859d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mb-1",
+      "targets": [
+        ["css=.mb-1", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/div/h4/a/h4", "xpath:idRelative"],
+        ["xpath=//a/h4", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fbe3b642-6241-4c2e-928d-ae61f95d0552",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "01"
+    }, {
+      "id": "bd2a12a9-5b66-4db0-bb4c-30ca18a0d6ca",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "pyw"
+    }, {
+      "id": "3b5fbef7-189d-49a6-a936-856bd589d10e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-check-label",
+      "targets": [
+        ["css=.form-check-label", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/div[3]/label", "xpath:idRelative"],
+        ["xpath=//div[3]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Keep me logged in')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "96381487-9d62-42e8-8c3a-62e3a0458406",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn",
+      "targets": [
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Sign In')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ff97f4b-331e-4dcb-b31d-ac4e9135d756",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Which of the following statements is illegal in `Python`? ( ...",
+      "targets": [
+        ["linkText=Which of the following statements is illegal in `Python`? ( ...", "linkText"],
+        ["css=.col-md-6:nth-child(1) tr:nth-child(1) .link-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'Which of the following statements is illegal in `Python`? ( ...')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div[3]/div/div/div[2]/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/student_view/objective_problem/11/8/')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Which of the following statements is illegal in `Python`? ( ...')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "63817172-dba5-4ea5-9a27-3b2f98b646f5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "17a7e74f-8b3f-4a24-b5a5-45e9b22affd2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "81ba06a6-0bff-478d-94ce-d995e54f144e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.accordion-button",
+      "targets": [
+        ["css=.accordion-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='problemAccordion']/div/h2/button", "xpath:idRelative"],
+        ["xpath=//h2/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Problem List')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ecb2ebe8-e49d-4aa6-ad4f-8147a2dbee38",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=L1-010 Comparison",
+      "targets": [
+        ["linkText=L1-010 Comparison", "linkText"],
+        ["css=.col-md-6:nth-child(2) tr:nth-child(1) .link-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'L1-010 Comparison')]", "xpath:link"],
+        ["xpath=//div[@id='panelsStayOpen-collapseOne']/div/div/div/div[2]/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/student_view/programming/11/1/')]", "xpath:href"],
+        ["xpath=//div[2]/table/tbody/tr/td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'L1-010 Comparison')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4787bed-9b97-484b-ab31-884fb5887b69",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0a03f492-12a8-4d3c-80a3-eb3490461df5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.justify-content-between > .col-auto:nth-child(3)",
+      "targets": [
+        ["css=.justify-content-between > .col-auto:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "762434ec-663d-45dc-8679-8d5bd90b356e",
@@ -3293,6 +3465,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["http://localhost:3000/"],
+  "urls": ["http://localhost:3000/", "http://localhost:3000/problem_set/student_view/one/11/"],
   "plugins": []
 }
