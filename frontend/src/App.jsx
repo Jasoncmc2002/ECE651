@@ -35,6 +35,7 @@ import ProblemSetAll from './components/problem_set/ProblemSetAll';
 import ProblemSetStudent from './components/problem_set/student/ProblemSetStudent';
 import ProblemSetObjectiveProblemStudent from './components/problem_set/student/ProblemSetObjectiveProblemStudent';
 import ProblemSetProgrammingStudent from './components/problem_set/student/ProblemSetProgrammingStudent';
+import ProblemSetAllRecordTeacher from './components/problem_set/teacher/ProblemSetAllRecordTeacher';
 
 
 
@@ -118,6 +119,7 @@ class App extends Component {
                     <Route path='/problem_set/student_view/one/:problem_set_id/' element={<ProblemSetStudent />} />
                     <Route path='/problem_set/student_view/objective_problem/:problem_set_id/:objective_problem_id/' element={<ProblemSetObjectiveProblemStudent />} />
                     <Route path='/problem_set/student_view/programming/:problem_set_id/:programming_id/' element={<ProblemSetProgrammingStudent />} />
+                    <Route path='/problem_set/teacher_view/all_record/:problem_set_id/' element={<ProblemSetAllRecordTeacher />} />
 
 
                     {/* Problem Set Management */}
