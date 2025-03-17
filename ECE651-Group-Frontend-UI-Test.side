@@ -3456,6 +3456,54 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "587aafcc-bed0-4be3-a17f-5f8d69ee5465",
+    "name": "Problem Set Teacher All Record",
+    "commands": [{
+      "id": "251f0e15-9b56-47a8-9c52-d0094a62a16c",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/set_manage/exam/10/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "422bf242-3868-4b58-b8f1-155825685b8a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ms-2",
+      "targets": [
+        ["css=.ms-2", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Transcript')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5247b4d5-3c80-449f-aa9f-d1876cff2390",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Transcript",
+      "targets": [
+        ["linkText=Transcript", "linkText"],
+        ["css=tr:nth-child(1) > td:nth-child(7) > .link-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'Transcript')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div[3]/div/div/table/tbody/tr/td[6]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/teacher_view/one_record/10/1/')]", "xpath:href"],
+        ["xpath=//td[6]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Transcript')]", "xpath:innerText"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win2319",
+      "windowTimeout": 2000
+    }, {
+      "id": "55fe6987-75e7-4c78-b1f6-268fd75ddba5",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win2319}",
+      "targets": [],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "762434ec-663d-45dc-8679-8d5bd90b356e",
