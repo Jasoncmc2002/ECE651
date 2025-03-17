@@ -2,7 +2,7 @@
   "id": "629b1176-d488-4186-9e7a-e94eb59192eb",
   "version": "2.0",
   "name": "ECE651-Group-Frontend-UI-Test",
-  "url": "http://localhost:3000/problem_set/student_view/one/11/",
+  "url": "http://localhost:3000/",
   "tests": [{
     "id": "46ee7373-cea1-4211-a6fa-61fea3ada6ea",
     "name": "Sign In",
