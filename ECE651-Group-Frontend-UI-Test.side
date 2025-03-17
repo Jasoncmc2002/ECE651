@@ -334,7 +334,7 @@
         ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "08"
+      "value": "UI_TEST_USER"
     }, {
       "id": "72d1490c-1fa5-4e8a-a840-99fd6bf650c3",
       "comment": "",
@@ -468,7 +468,7 @@
         ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "08"
+      "value": "UI_TEST_USER"
     }, {
       "id": "c57bdd18-1695-42b5-91f9-a0a95ddefe6c",
       "comment": "",
