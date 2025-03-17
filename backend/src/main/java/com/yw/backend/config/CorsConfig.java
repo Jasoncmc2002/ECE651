@@ -6,16 +6,24 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class CorsConfig implements Filter {
+
+    private static final List<String> allowedOrigins = Arrays.asList(
+            "http://localhost:3000",
+            "https://front-end-master.d3hb73g4dd1rcg.amplifyapp.com/"
+    );
+
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
 
         String origin = request.getHeader("Origin");
-        if (origin != null) {
+        if (origin != null && allowedOrigins.contains(origin)) {
             response.setHeader("Access-Control-Allow-Origin", origin);
         }
 
@@ -34,7 +42,6 @@ public class CorsConfig implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-
     }
 
     @Override
