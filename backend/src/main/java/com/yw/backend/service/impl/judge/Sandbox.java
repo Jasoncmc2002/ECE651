@@ -47,6 +47,8 @@ public class Sandbox {
         CodeRunner codeRunner = new CodeRunner();
         codeRunner.setDaemon(true);
         codeRunner.code = this.code;
+        System.setProperty("python.home", "/home/ec2-user/ec2-user/jython");
+        PythonInterpreter.initialize(System.getProperties(), null, new String[0]);
 
         try (PythonInterpreter pythonInterpreter = new PythonInterpreter()) {
             pythonInterpreter.exec("from __future__ import print_function");
