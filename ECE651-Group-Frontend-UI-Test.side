@@ -2757,7 +2757,7 @@
         ["xpath=//div[@id='assignmentCreateModal']/div/div/div[2]/div/div/div[2]/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "TEST1234"
+      "value": "UI TEST SET"
     }, {
       "id": "bddd5001-3a1d-4c48-9f4c-1a75fb050fc5",
       "comment": "",
