@@ -640,7 +640,7 @@
         ["xpath=//div[@id='root']/div/div/div/div/div/form/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "08"
+      "value": "UI_TEST_USER"
     }, {
       "id": "a5f2bfa7-e73c-4576-aca1-54218c3f9efc",
       "comment": "",
@@ -710,20 +710,6 @@
         ["xpath=//a[contains(.,'Default User')]", "xpath:innerText"]
       ],
       "value": ""
-    }, {
-      "id": "73860ab9-bb84-4042-84d3-763ce93f0aca",
-      "comment": "",
-      "command": "type",
-      "target": "id=old_password",
-      "targets": [
-        ["id=old_password", "id"],
-        ["name=old_password", "name"],
-        ["css=#old_password", "css:finder"],
-        ["xpath=//input[@id='old_password']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[2]/div[2]/div/form/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/form/div/input", "xpath:position"]
-      ],
-      "value": "v7fMfteTKB7TTd3"
     }, {
       "id": "347a5a28-d2b7-45b4-846f-982a5cb16f6f",
       "comment": "",
