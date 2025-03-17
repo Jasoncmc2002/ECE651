@@ -3504,6 +3504,168 @@
       "targets": [],
       "value": ""
     }]
+  }, {
+    "id": "906508ab-e368-4874-b3f3-f46a1ed64b11",
+    "name": "Problem Set Teacher One Record",
+    "commands": [{
+      "id": "c3809a04-82bb-4220-9357-4cbfa8260994",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/problem_set/teacher_view/one_record/10/1/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7352c8d9-c8ba-4739-a339-688364c3a2c2",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Which of the following statements is illegal in `Python`? ( ...",
+      "targets": [
+        ["linkText=Which of the following statements is illegal in `Python`? ( ...", "linkText"],
+        ["css=.col-md-6:nth-child(1) tr:nth-child(1) .link-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'Which of the following statements is illegal in `Python`? ( ...')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/div/div[3]/div/div/div[2]/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/teacher_view/objective_problem/10/8/1/')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Which of the following statements is illegal in `Python`? ( ...')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3575c319-8e7a-4a14-b9f7-7f9b9c0eeece",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f3aaf98d-e037-4174-8c9d-63e2402c3dbf",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "25a12ddb-2a27-4fa8-ac07-97d4414da251",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0b4532c-8265-4efe-b9e5-840126b59af5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c66571b6-e21c-4d7a-a728-4e502257ce62",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5bb392d7-d18d-470a-80c4-316be68f59e4",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "faf745a3-3e6f-4ad3-956a-d28ec8e819a5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.accordion-button",
+      "targets": [
+        ["css=.accordion-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='problemAccordion']/div/h2/button", "xpath:idRelative"],
+        ["xpath=//h2/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Problem List')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f9d5d467-e05b-418f-b98c-feefa8cba47e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=L1-001 Hello World",
+      "targets": [
+        ["linkText=L1-001 Hello World", "linkText"],
+        ["css=.col-md-6:nth-child(2) tr:nth-child(1) .link-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'L1-001 Hello World')]", "xpath:link"],
+        ["xpath=//div[@id='panelsStayOpen-collapseOne']/div/div/div/div[2]/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/problem_set/teacher_view/programming/10/2/1/')]", "xpath:href"],
+        ["xpath=//div[2]/table/tbody/tr/td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'L1-001 Hello World')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "40d02019-73e5-4fee-ad88-a791adc61182",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "43601652-8bf6-4d90-9c81-32d6e60a1cd2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9f8ee501-011d-4667-9ecc-4d740020e0f1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-auto:nth-child(3) > .btn",
+      "targets": [
+        ["css=.col-auto:nth-child(3) > .btn", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "762434ec-663d-45dc-8679-8d5bd90b356e",
