@@ -192,22 +192,22 @@ class ProblemSetStudent extends Component {
                     // started, not_started, timeout, ended,
                     if (resp.ps_status === "not_started") {
                         this.setState({
-                            ps_status_message: 'the answering has not started',
+                            ps_status_message: 'The answering has not started',
                             ps_status_enum: 1,
                         });
                     } else if (resp.ps_status === "started") {
                         this.setState({
-                            ps_status_message: 'the answering has started',
+                            ps_status_message: 'The answering has started',
                             ps_status_enum: 2,
                         });
                     } else if (resp.ps_status === "ended") {
                         this.setState({
-                            ps_status_message: 'the answering time has expired',
+                            ps_status_message: 'The answering time has expired',
                             ps_status_enum: 3,
                         });
                     } else if (resp.ps_status === "closed") {
                         this.setState({
-                            ps_status_message: 'the problem set has ended',
+                            ps_status_message: 'The problem set has ended',
                             ps_status_enum: 4,
                         });
                     }
@@ -270,7 +270,7 @@ class ProblemSetStudent extends Component {
     }
 
     renderCountDown = () => {
-        const CompleteMessage = () => <span>the answering time has expired</span>;
+        const CompleteMessage = () => <span>The answering time has expired</span>;
         const addMinutes = (date, minutes) => {
             const dateCopy = new Date(date);
             dateCopy.setMinutes(date.getMinutes() + minutes);
@@ -278,11 +278,11 @@ class ProblemSetStudent extends Component {
         }
         if (this.state.ps_status_enum === 3) {
             return (
-                <span>the answering time has expired</span>
+                <span>The answering time has expired</span>
             );
         } else if (this.state.ps_status_enum === 4) {
             return (
-                <span>the problem set has ended</span>
+                <span>The problem set has ended</span>
             );
         } else if (this.state.ps_status_enum === 2) {
             // show count down
