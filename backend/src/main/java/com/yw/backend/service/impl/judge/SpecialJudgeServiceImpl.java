@@ -38,7 +38,7 @@ public class SpecialJudgeServiceImpl implements SpecialJudgeService {
                 if (!sandbox.isEndedNormally()) {
                     System.out.println("Python Error in Sandbox");
                     resp.put("error_message", "success");
-                    resp.put("test_output", "Error during code execution: " + "\n" + sandbox.getTestOut());
+                    resp.put("test_output", "Runtime or Syntax Error: " + "\n" + sandbox.getTestOut());
                     return resp;
                 }
 
@@ -49,7 +49,7 @@ public class SpecialJudgeServiceImpl implements SpecialJudgeService {
                 System.out.println("Sandbox Timeout");
 
                 resp.put("error_message", "success");
-                resp.put("test_output", "Code Execution Timeout");
+                resp.put("test_output", "Time Limit Exceeded");
             }
             return resp;
         } catch (InterruptedException e) {
