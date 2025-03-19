@@ -264,7 +264,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
                                 System.out.println("Python Error in Sandbox");
                                 System.out.println(sandbox.getTestOut() + "/");
                                 resp.put("test_input", testInput);
-                                resp.put("test_output", "Runtime error：" + "\n" + sandbox.getTestOut());
+                                resp.put("test_output", "Runtime or Syntax Error：" + "\n" + sandbox.getTestOut());
                             } else {
                                 if (testOutput.equals(sandbox.getTestOut())) {
                                     passCount += 1;
@@ -272,13 +272,13 @@ public class ProblemSetServiceImpl implements ProblemSetService {
                                     System.out.println("Expected output: \n" + testOutput + "/");
                                     System.out.println("Actual output: \n" + sandbox.getTestOut() + "/");
                                     resp.put("test_input", testInput);
-                                    resp.put("test_output", "Expected output: \n" + testOutput + "/" + '\n' + "Actual output: \n" + sandbox.getTestOut() + "/");
+                                    resp.put("test_output", "Expected Output: \n" + testOutput + "/" + '\n' + "Actual Output: \n" + sandbox.getTestOut() + "/");
                                 }
                             }
                         } else {
                             System.out.println("Sandbox Timeout");
                             resp.put("test_input", testInput);
-                            resp.put("test_output", "Runtime error: Execution Timeout");
+                            resp.put("test_output", "Time Limit Exceeded");
                         }
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -448,7 +448,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
                         if (!sandbox.isEndedNormally()) {
                             System.out.println("Python Error in Sandbox");
                             resp.put("error_message", "success");
-                            resp.put("test_output", "Run error：" + "\n" + sandbox.getTestOut());
+                            resp.put("test_output", "Runtime or Syntax Error: "+ "\n" + sandbox.getTestOut());
                             return resp;
                         }
 
@@ -459,7 +459,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
                         System.out.println("Sandbox Timeout");
 
                         resp.put("error_message", "success");
-                        resp.put("test_output", "Execution Timeout");
+                        resp.put("test_output", "Time Limit Exceeded");
                     }
                     return resp;
                 } catch (InterruptedException e) {

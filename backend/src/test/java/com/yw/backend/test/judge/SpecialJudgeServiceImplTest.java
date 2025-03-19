@@ -81,7 +81,7 @@ public class SpecialJudgeServiceImplTest {
                 "while True: pass", "", 100);  // 100ms timeout
 
         assertEquals("success", result.get("error_message"));
-        assertEquals("Code Execution Timeout", result.get("test_output"));
+        assertEquals("Time Limit Exceeded", result.get("test_output"));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class SpecialJudgeServiceImplTest {
                 "print(1/0)", "", 1000);
 
         assertEquals("success", result.get("error_message"));
-        assertTrue(result.get("test_output").startsWith("Error during code execution: "));
+        assertTrue(result.get("test_output").startsWith("Runtime or Syntax Error: "));
     }
 
     @Test

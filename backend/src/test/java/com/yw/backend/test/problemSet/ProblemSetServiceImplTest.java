@@ -675,7 +675,7 @@ public class ProblemSetServiceImplTest {
         assertEquals("0", result.get("pa_actual_score"));
         assertEquals("0", result.get("pass_count"));
         assertEquals("2", result.get("tc_count"));
-        assertEquals("Answer Incorrect", result.get("res_message"));
+        assertEquals("Wrong Answer", result.get("res_message"));
 
         // Also verify an insert was done
         verify(programmingAnswerMapper, times(1)).insert(any(ProgrammingAnswer.class));
@@ -752,7 +752,7 @@ public class ProblemSetServiceImplTest {
         assertEquals("0", result.get("pa_actual_score"));
         assertEquals("0", result.get("pass_count"));
         assertEquals("2", result.get("tc_count"));
-        assertEquals("Answer Incorrect", result.get("res_message"));
+        assertEquals("Wrong Answer", result.get("res_message"));
 
         // Should update existing programmingAnswer
         verify(programmingAnswerMapper, times(1)).update(any(ProgrammingAnswer.class), any());
@@ -809,7 +809,7 @@ public class ProblemSetServiceImplTest {
         // pass_count=0 => partial or full? It's actually 0
         assertEquals("0", result.get("pass_count"));
         assertEquals("0", result.get("pa_actual_score"));
-        assertEquals("Answer Incorrect", result.get("res_message"));
+        assertEquals("Wrong Answer", result.get("res_message"));
     }
 
     /* ********************************************************************
