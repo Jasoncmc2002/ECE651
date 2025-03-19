@@ -569,11 +569,11 @@ public class ProblemSetServiceImpl implements ProblemSetService {
             objectiveProblemAnswerQueryWrapper.eq("author_id", user.getUserId());
             List<ObjectiveProblemAnswer> objectiveProblemAnswerList = objectiveProblemAnswerMapper.selectList(objectiveProblemAnswerQueryWrapper);
             if (objectiveProblemAnswerList.isEmpty()) {
-                map.put("opa_status", "Questions not answered");
+                map.put("opa_status", "Not Answered");
                 map.put("opa_actual_score", "0");
             } else {
                 ObjectiveProblemAnswer objectiveProblemAnswer = objectiveProblemAnswerList.get(0);
-                map.put("opa_status", "Questions answered");
+                map.put("opa_status", "Answered");
                 if (now.isAfter(problemSet.getPsEndTime())) {
                     map.put("opa_actual_score", objectiveProblemAnswer.getOpaActualScore().toString());
                 } else {
@@ -665,11 +665,11 @@ public class ProblemSetServiceImpl implements ProblemSetService {
             programmingAnswerQueryWrapper.eq("author_id", user.getUserId());
             List<ProgrammingAnswer> programmingAnswerList = programmingAnswerMapper.selectList(programmingAnswerQueryWrapper);
             if (programmingAnswerList.isEmpty()) {
-                map.put("pa_status", "Questions not answered");
+                map.put("pa_status", "Not Answered");
                 map.put("pa_actual_score", "0");
             } else {
                 ProgrammingAnswer programmingAnswer = programmingAnswerList.get(0);
-                map.put("pa_status", "Questions already answered");
+                map.put("pa_status", "Answered");
                 map.put("pa_actual_score", programmingAnswer.getPaActualScore().toString());
             }
             resp.add(map);
@@ -858,7 +858,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
         StudentNPs studentNPs = studentNPsList.get(0);
         if (studentNPs.getFirstStartTime() == null && now.isBefore(problemSet.getPsEndTime())) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "Not answered yet");
+            resp.put("error_message", "Not Answered");
             return resp;
         }
 
@@ -910,7 +910,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
         switch (state) {
             case 1: {
                 Map<String, String> resp = new HashMap<>();
-                resp.put("error_message", "Not answered yet");
+                resp.put("error_message", "Not Answered");
                 return resp;
             }
             case 2: {
@@ -1082,7 +1082,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
         LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(problemSet.getPsStartTime())) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "The problem set has not started yet");
+            resp.put("error_message", "The problem set has not started");
             return resp;
         }
 
@@ -1239,7 +1239,7 @@ public class ProblemSetServiceImpl implements ProblemSetService {
         LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(problemSet.getPsStartTime())) {
             Map<String, String> resp = new HashMap<>();
-            resp.put("error_message", "The problem set has not started yet");
+            resp.put("error_message", "The problem set has not started");
             return resp;
         }
 

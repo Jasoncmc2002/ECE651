@@ -81,7 +81,7 @@ public class ProblemSetTeacherServiceImpl implements ProblemSetTeacherService {
 
         LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(problemSet.getPsStartTime())) {
-            resp.put("ps_status_message", "The problem set has not started yet");
+            resp.put("ps_status_message", "The problem set has not started");
         } else if (now.isAfter(problemSet.getPsEndTime())) {
             resp.put("ps_status_message", "The problem set has ended");
         } else {
@@ -344,7 +344,7 @@ public class ProblemSetTeacherServiceImpl implements ProblemSetTeacherService {
             List<ProgrammingAnswer> programmingAnswerList = programmingAnswerMapper.selectList(programmingAnswerQueryWrapper);
 
             if (programmingAnswerList.isEmpty()) {
-                map.put("pa_status", "Unanswered");
+                map.put("pa_status", "Not Answered");
                 map.put("pa_actual_score", "0");
             } else {
                 ProgrammingAnswer programmingAnswer = programmingAnswerList.get(0);
@@ -798,11 +798,11 @@ public class ProblemSetTeacherServiceImpl implements ProblemSetTeacherService {
 
         LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(problemSet.getPsStartTime())) {
-            resp.put("ps_status_message", "Problem set already started");
+            resp.put("ps_status_message", "The problem set has not started");
         } else if (now.isAfter(problemSet.getPsEndTime())) {
-            resp.put("ps_status_message", "Problem set already finished");
+            resp.put("ps_status_message", "The problem set has ended");
         } else {
-            resp.put("ps_status_message", "Problem set already started");
+            resp.put("ps_status_message", "The problem set has started");
         }
 
         return resp;
@@ -897,11 +897,11 @@ public class ProblemSetTeacherServiceImpl implements ProblemSetTeacherService {
             objectiveProblemAnswerQueryWrapper.eq("author_id", student.getUserId());
             List<ObjectiveProblemAnswer> objectiveProblemAnswerList = objectiveProblemAnswerMapper.selectList(objectiveProblemAnswerQueryWrapper);
             if (objectiveProblemAnswerList.isEmpty()) {
-                map.put("opa_status", "Not answered yet");
+                map.put("opa_status", "Not Answered");
                 map.put("opa_actual_score", "0");
             } else {
                 ObjectiveProblemAnswer objectiveProblemAnswer = objectiveProblemAnswerList.get(0);
-                map.put("opa_status", "Already answered");
+                map.put("opa_status", "Answered");
                 map.put("opa_actual_score", objectiveProblemAnswer.getOpaActualScore().toString());
             }
             resp.add(map);

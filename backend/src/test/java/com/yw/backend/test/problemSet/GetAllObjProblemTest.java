@@ -159,7 +159,7 @@ class ProblemSetServiceGetAllObjectiveProblemTest {
         assertEquals("1", problem1.get("objective_problem_id"));
         assertTrue(problem1.get("op_description").startsWith("Test Problem 1"));
         assertEquals("10", problem1.get("op_total_score"));
-        assertEquals("Questions answered", problem1.get("opa_status"));
+        assertEquals("Answered", problem1.get("opa_status"));
         assertEquals("--", problem1.get("opa_actual_score")); // Exam not ended yet
 
         // Check second problem (not answered)
@@ -167,7 +167,7 @@ class ProblemSetServiceGetAllObjectiveProblemTest {
         assertEquals("2", problem2.get("objective_problem_id"));
         assertTrue(problem2.get("op_description").startsWith("Test Problem 2"));
         assertEquals("5", problem2.get("op_total_score"));
-        assertEquals("Questions not answered", problem2.get("opa_status"));
+        assertEquals("Not Answered", problem2.get("opa_status"));
         assertEquals("0", problem2.get("opa_actual_score"));
     }
 

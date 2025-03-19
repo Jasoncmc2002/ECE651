@@ -172,7 +172,7 @@ class ProblemSetTeacherServiceImplTest {
         assertEquals("10", one.get("programming_id"));
         assertEquals("Test Programming", one.get("p_title"));
         assertEquals("50", one.get("p_total_score"));
-        assertEquals("Unanswered", one.get("pa_status"));
+        assertEquals("Not Answered", one.get("pa_status"));
         assertEquals("0", one.get("pa_actual_score"));
     }
 

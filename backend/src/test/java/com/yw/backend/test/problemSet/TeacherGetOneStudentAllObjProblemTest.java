@@ -187,7 +187,7 @@ class TeacherGetOneStudentAllObjProblemTest {
         assertEquals("1", problem1.get("objective_problem_id"));
         assertTrue(problem1.get("op_description").startsWith("What is the time complexity of binary search?"));
         assertEquals("10", problem1.get("op_total_score"));
-        assertEquals("Already answered", problem1.get("opa_status"));
+        assertEquals("Answered", problem1.get("opa_status"));
         assertEquals("10", problem1.get("opa_actual_score"));
 
         // Check second problem (not answered)
@@ -195,7 +195,7 @@ class TeacherGetOneStudentAllObjProblemTest {
         assertEquals("2", problem2.get("objective_problem_id"));
         assertTrue(problem2.get("op_description").startsWith("What is the time complexity of bubble sort?"));
         assertEquals("8", problem2.get("op_total_score"));
-        assertEquals("Not answered yet", problem2.get("opa_status"));
+        assertEquals("Not Answered", problem2.get("opa_status"));
         assertEquals("0", problem2.get("opa_actual_score"));
     }
 

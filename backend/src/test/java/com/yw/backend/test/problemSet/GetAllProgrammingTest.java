@@ -158,7 +158,7 @@ class ProblemSetServiceGetAllProgrammingTest {
         assertEquals("1", problem1.get("programming_id"));
         assertEquals("L1-010 Comparison", problem1.get("p_title"));
         assertEquals("20", problem1.get("p_total_score"));
-        assertEquals("Questions already answered", problem1.get("pa_status"));
+        assertEquals("Answered", problem1.get("pa_status"));
         assertEquals("18", problem1.get("pa_actual_score"));
 
         // Check second problem (not answered)
@@ -166,7 +166,7 @@ class ProblemSetServiceGetAllProgrammingTest {
         assertEquals("2", problem2.get("programming_id"));
         assertEquals("L1-001 Hello World", problem2.get("p_title"));
         assertEquals("15", problem2.get("p_total_score"));
-        assertEquals("Questions not answered", problem2.get("pa_status"));
+        assertEquals("Not Answered", problem2.get("pa_status"));
         assertEquals("0", problem2.get("pa_actual_score"));
     }
 

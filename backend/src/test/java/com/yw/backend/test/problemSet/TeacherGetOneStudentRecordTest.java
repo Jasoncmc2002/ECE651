@@ -219,7 +219,7 @@ class TeacherGetOneStudentRecordTest {
         assertEquals("30", result.get("ps_total_score")); // 10 + 20
         assertEquals("25", result.get("ps_actual_score")); // 10 + 15
         assertNotNull(result.get("first_start_time"));
-        assertEquals("Problem set already started", result.get("ps_status_message"));
+        assertEquals("The problem set has started", result.get("ps_status_message"));
     }
 
     @Test
@@ -411,7 +411,7 @@ class TeacherGetOneStudentRecordTest {
 
         // Verify the result
         assertEquals("success", result.get("error_message"));
-        assertEquals("Problem set already finished", result.get("ps_status_message"));
+        assertEquals("The problem set has ended", result.get("ps_status_message"));
     }
 
     @Test
