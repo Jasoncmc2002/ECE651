@@ -418,7 +418,7 @@ class ProblemSetProgrammingStudent extends Component {
     }
 
     renderCountDown = () => {
-        const CompleteMessage = () => <span>the answering time has expired</span>;
+        const CompleteMessage = () => <span>The answering time has expired</span>;
         const addMinutes = (date, minutes) => {
             const dateCopy = new Date(date);
             dateCopy.setMinutes(date.getMinutes() + minutes);
@@ -426,11 +426,11 @@ class ProblemSetProgrammingStudent extends Component {
         }
         if (this.state.ps_status_enum === 3) {
             return (
-                <span>the answering time has expired</span>
+                <span>The answering time has expired</span>
             );
         } else if (this.state.ps_status_enum === 4) {
             return (
-                <span>the problem set has ended</span>
+                <span>The problem set has ended</span>
             );
         } else if (this.state.ps_status_enum === 2) {
             // show count down
