@@ -1318,7 +1318,7 @@ public class ProblemSetServiceImplTest {
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(new StudentNPs()));
 
         Map<String, String> result = problemSetServiceImpl.getOne(1);
-        assertEquals("The problem set has not started yet", result.get("error_message"));
+        assertEquals("The problem set has not started", result.get("error_message"));
     }
 
     @Test
@@ -1351,7 +1351,7 @@ public class ProblemSetServiceImplTest {
         when(studentNPsMapper.selectList(any())).thenReturn(Collections.singletonList(studentNPs)); // 关键点
 
         Map<String, String> result = problemSetServiceImpl.startProblemSet(1);
-        assertEquals("The problem set has not started yet", result.get("error_message"));
+        assertEquals("The problem set has not started", result.get("error_message"));
     }
 
 

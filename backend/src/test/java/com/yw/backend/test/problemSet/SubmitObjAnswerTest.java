@@ -289,7 +289,7 @@ class ProblemSetServiceSubmitObjectiveProblemAnswerTest {
         Map<String, String> result = problemSetService.submitObjectiveProblemAnswer(1, 1, "O(log n)");
 
         // Verify the result
-        assertEquals("Not answered yet", result.get("error_message"));
+        assertEquals("Not Answered", result.get("error_message"));
     }
 
     @Test
