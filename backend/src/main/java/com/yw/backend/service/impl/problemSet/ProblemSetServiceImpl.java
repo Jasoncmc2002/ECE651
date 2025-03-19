@@ -314,11 +314,11 @@ public class ProblemSetServiceImpl implements ProblemSetService {
                 resp.put("pass_count", String.valueOf(passCount));
                 resp.put("tc_count", String.valueOf(testCaseList.size()));
                 if (passCount == 0) {
-                    resp.put("res_message", "Answer Incorrect");
+                    resp.put("res_message", "Wrong Answer");
                 } else if (passCount == testCaseList.size()) {
-                    resp.put("res_message", "Answer Correct");
+                    resp.put("res_message", "Accepted");
                 } else {
-                    resp.put("res_message", "Partial Answer Correct");
+                    resp.put("res_message", "Partially Accepted");
                 }
                 resp.put("error_message", "success");
                 return resp;
