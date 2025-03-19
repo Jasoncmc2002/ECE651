@@ -22,9 +22,11 @@ public class SetManageServiceImpl implements SetManageService {
     private UserMapper userMapper;
     @Autowired
     private ProgrammingMapper programmingMapper;
+    @Autowired
     private StudentNPsMapper studentNPsMapper;
     @Autowired
     private PNPsMapper pnPsMapper;
+    @Autowired
     private ObjectiveProblemAnswerMapper objectiveProblemAnswerMapper;
     @Autowired
     private ProgrammingAnswerMapper programmingAnswerMapper;
