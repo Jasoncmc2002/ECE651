@@ -1,3 +1,3 @@
-const BACKEND_ADDRESS_URL = "http://54.208.255.9:8080";
+const BACKEND_ADDRESS_URL = "http://localhost:8080";
 
 export default BACKEND_ADDRESS_URL;
