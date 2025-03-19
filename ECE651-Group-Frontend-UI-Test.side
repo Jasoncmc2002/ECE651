@@ -2214,7 +2214,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[2]/div/div/div[2]/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "123"
+      "value": "UI TEST CREATE"
     }, {
       "id": "16f8cfd9-3794-4804-aa22-8e2f2b666129",
       "comment": "",
