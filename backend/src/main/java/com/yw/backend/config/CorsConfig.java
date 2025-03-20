@@ -13,8 +13,7 @@ import java.util.List;
 public class CorsConfig implements Filter {
 
     private static final List<String> allowedOrigins = Arrays.asList(
-            "http://localhost:3000",
-            "https://front-end-master.d3hb73g4dd1rcg.amplifyapp.com/"
+            "http://localhost:3000"
     );
 
     @Override
