@@ -12,9 +12,7 @@ import java.util.List;
 @Configuration
 public class CorsConfig implements Filter {
 
-    private static final List<String> allowedOrigins = Arrays.asList(
-            "http://localhost:3000"
-    );
+    private static final List<String> allowedOrigins = Arrays.asList("http://localhost:3000");
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
