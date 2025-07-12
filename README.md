@@ -48,9 +48,9 @@ We use GitHub for source code management and project management
 ➢ User Story
 <p><img src="assets/p47_0.jpg"></p>
 ➢ DB Table Structure Definition
-<p><img src="assets/p48_0.jpg" style="width:50%;"></p>
+<p><img src="assets/p48_0.jpg" style="width:75%;"></p>
 ➢ API Definition
-<p><img src="assets/p48_1.jpg" style="width:50%;"></p>
+<p><img src="assets/p48_1.jpg" style="width:75%;"></p>
 ➢ Kanban Board
 <p><img src="assets/p49_0.jpg"></p>
 
@@ -64,20 +64,20 @@ We use GitHub for source code management and project management
 ➢ UI Testing – Selenium
 <p><img src="assets/p51_1.png" style="width:75%;"></p>
 ➢ GitHub Actions for CI and Auto Testing
-<p><img src="assets/p52_0.jpg" style="width:75%;"></p>
+<p><img src="assets/p52_0.jpg"></p>
 
 ### 4.6 Pull Requests
-<p><img src="assets/p55_0.jpg" style="width:75%;"></p>
+<p><img src="assets/p55_0.jpg"></p>
 
 
 
-## 5 DEPLOYMENT on AWS
+## 5 DEPLOYMENT ON AWS
 
 ➢ AWS Servers
-<p><img src="assets/p53_0.jpg" style="width:75%;"></p>
+<p><img src="assets/p53_0.jpg"></p>
 
 ➢ AWS Continuous Deployment (CD)
-<p><img src="assets/p54_0.jpg" style="width:75%;"></p>
+<p><img src="assets/p54_0.jpg"></p>
 
 ## 6 DEVELOPMENT TEAM (In alphabetical order)
 Mingchen Cai
