@@ -5,6 +5,8 @@
 
 Our project enables educators to create problem sets of coding assignments (in Python) or exams with objective problems and programming problems. Students submit their Python code right on the site; the system runs it in a secure sandbox and instantly returns the output. The application will automatically grade students’ answers and collect students’ performance data for each problem set, meeting the needs of Python education in many aspects.
 
+We manage the code on GitHub and following agile practices — iterative sprints, pull-request reviews, automated testing, and regular deployments.
+
 ## 2. PROJECT ARCHITECTURE
 <p><img src="assets/architecture.png"></p>
 
