@@ -82,10 +82,5 @@ We use GitHub for source code management and project management
 <p><img src="assets/p54_0.jpg"></p>
 
 ## 6 DEVELOPMENT TEAM (In alphabetical order)
-Mingchen Cai
+![Development Team](assets/Development%20Team.jpg)
 
-Henry Qiu
-
-Yulin Wu
-
-Zhanhong Liu
